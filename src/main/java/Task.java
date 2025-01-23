@@ -12,7 +12,15 @@ public class Task {
         return (isDone ? "X" : " ");
     }
 
+    public void setMarked() {
+        this.isDone = true;
+    }
+
+    public void setUnmarked() {
+        this.isDone = false;
+    }
+
     public String getDescription() {
-        return  ". " + "[" + getStatusIcon() + "]" + this.description;
+        return  "[" + getStatusIcon() + "] " + this.description;
     }
 }
