@@ -1,0 +1,11 @@
+todo Revise CS2103T
+event NUS CS Career Fair /from 21 Jan /to 22 Jan
+deadline CS2103T iP Level-6 /by 24 Jan 16:00
+list
+todo Revise CS2105
+mark 1
+mark 2
+list
+unmark 1
+list
+bye

@@ -1,7 +1,47 @@
-Hello from
- ____        _        
-|  _ \ _   _| | _____ 
-| | | | | | | |/ / _ \
-| |_| | |_| |   <  __/
-|____/ \__,_|_|\_\___|
+Hello! I'm Minnim.
+What can I do for you?
+
+
+Got it. I've added this task:
+
+1. [T][ ] Revise CS2103T
+
+Now you have 1 tasks in the list.
+Got it. I've added this task:
+
+2. [E][ ] NUS CS Career Fair (from: 21 Jan to: 22 Jan)
+
+Now you have 2 tasks in the list.
+Got it. I've added this task:
+
+3. [D][ ] CS2103T iP Level-6 (by: 24 Jan 16:00)
+
+Now you have 3 tasks in the list.
+1. [T][ ] Revise CS2103T
+2. [E][ ] NUS CS Career Fair (from: 21 Jan to: 22 Jan)
+3. [D][ ] CS2103T iP Level-6 (by: 24 Jan 16:00)
+Got it. I've added this task:
+
+4. [T][ ] Revise CS2105
+
+Now you have 4 tasks in the list.
+Nice! I've marked this task as done:
+
+1. [T][X] Revise CS2103T
+Nice! I've marked this task as done: 
+
+2. [E][X] NUS CS Career Fair (from: 21 Jan to: 22 Jan)
+1. [T][X] Revise CS2103T
+2. [E][X] NUS CS Career Fair (from: 21 Jan to: 22 Jan)
+3. [D][ ] CS2103T iP Level-6 (by: 24 Jan 16:00)
+4. [T][ ] Revise CS2105
+OK, I've marked this task as not done yet:
+
+1. [T][ ] Revise CS2103T
+1. [T][ ] Revise CS2103T
+2. [E][X] NUS CS Career Fair (from: 21 Jan to: 22 Jan)
+3. [D][ ] CS2103T iP Level-6 (by: 24 Jan 16:00)
+4. [T][ ] Revise CS2105
+     Bye. Hope to see you again soon!
+
 
