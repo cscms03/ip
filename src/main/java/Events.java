@@ -10,6 +10,6 @@ public class Events extends Task{
 
     @Override
     public String getDescription() {
-        return "[E][" + getStatusIcon() + "] " + this.description + " (from: " + this.from + " to: " + this.to + ")";
+        return "[E][" + getStatusIcon() + "] " + this.description + " (from:" + this.from + " to:" + this.to + ")";
     }
 }

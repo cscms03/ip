@@ -72,6 +72,10 @@ public class Minnim {
 
             else if (message.startsWith("mark")) {
                 int taskNum = Integer.parseInt(message.substring(5).trim());
+                if (taskNum > i) {
+                    System.out.println("Your current number of task is less than the number you gave.");
+                    break;
+                }
                 tasks[taskNum - 1].setMarked();
                 System.out.println("Nice! I've marked this task as done: \n");
                 System.out.println(taskNum + ". "+ tasks[taskNum - 1].getDescription());
@@ -79,6 +83,10 @@ public class Minnim {
 
             else if (message.startsWith("unmark")) {
                 int taskNum = Character.getNumericValue(message.charAt(7));
+                if (taskNum > i) {
+                    System.out.println("Your current number of task is less than the number you gave.");
+                    break;
+                }
                 tasks[taskNum - 1].setUnmarked();
                 System.out.println("OK, I've marked this task as not done yet: \n");
                 System.out.println(taskNum + ". "+tasks[taskNum - 1].getDescription());
