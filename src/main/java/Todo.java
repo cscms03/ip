@@ -1,12 +1,11 @@
 public class Todo extends Task {
     protected String date;
-    public Todo(String description, String date) {
+    public Todo(String description) {
         super(description);
-        this.date = date;
     }
 
     @Override
     public String getDescription() {
-        return " ";
+        return  "[T][" + getStatusIcon() + "] " + this.description;
     }
 }

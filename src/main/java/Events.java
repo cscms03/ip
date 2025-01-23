@@ -1,6 +1,7 @@
 public class Events extends Task{
     protected String from;
     protected String to;
+
     public Events(String description, String from, String to) {
         super(description);
         this.from = from;
@@ -9,6 +10,6 @@ public class Events extends Task{
 
     @Override
     public String getDescription() {
-        return " ";
+        return "[E][" + getStatusIcon() + "] " + this.description + " (from: " + this.from + " to: " + this.to + ")";
     }
 }
