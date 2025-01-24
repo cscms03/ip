@@ -1,24 +1,25 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Minnim {
     private Scanner s = new Scanner(System.in);
-    private Task[] tasks = new Task[100];
+    private ArrayList<Task> tasks = new ArrayList<>();
     private final String dateDivider = "/";
 
-    private void todo(String message, int i) throws MinnimMissingTaskDetailException {
+
+    private void todo(String message) throws MinnimMissingTaskDetailException {
         try {
             Todo todo = new Todo(message.substring(5));
-            this.tasks[i] = todo;
-            i++;
+            this.tasks.add(todo);
             System.out.println("Got it. I've added this task:\n");
-            System.out.println(i + ". " + todo.getDescription() + "\n");
-            System.out.println("Now you have " + i + " tasks in the list.");
+            System.out.println(this.tasks.size() + ". " + todo.getDescription() + "\n");
+            System.out.println("Now you have " + this.tasks.size() + " tasks in the list.");
         } catch (StringIndexOutOfBoundsException e) {
             throw new MinnimMissingTaskDetailException();
         }
     }
 
-    private void deadline(String message, int i) throws MinnimMissingTaskDetailException, MinnimMissingDateException {
+    private void deadline(String message) throws MinnimMissingTaskDetailException, MinnimMissingDateException {
         try {
             if (message.length() == 8) {
                 // case where only "deadline" was entered without task nor dates
@@ -27,21 +28,20 @@ public class Minnim {
             int index = message.indexOf(dateDivider);
             String date = message.substring(index + 1).replaceFirst("by", "");
             Deadline deadline = new Deadline(message.substring(9, index - 1), date);
-            this.tasks[i] = deadline;
-            i++;
+            this.tasks.add(deadline);
             System.out.println("Got it. I've added this task:\n");
-            System.out.println(i + ". " + deadline.getDescription() + "\n");
-            System.out.println("Now you have " + i + " tasks in the list.");
+            System.out.println(this.tasks.size() + ". " + deadline.getDescription() + "\n");
+            System.out.println("Now you have " + this.tasks.size() + " tasks in the list.");
         } catch (StringIndexOutOfBoundsException e) {
             // case where deadline and task details were given but missing a date
             throw new MinnimMissingDateException();
         }
     }
 
-    private void event(String message, int i) throws MinnimMissingTaskDetailException, MinnimMissingDateException {
+    private void event(String message) throws MinnimMissingTaskDetailException, MinnimMissingDateException {
         try {
             if (message.length() == 5) {
-                // case where only "evemt" was entered without task nor dates
+                // case where only "event" was entered without task nor dates
                 throw new MinnimMissingTaskDetailException();
             }
             int firstIndex = message.indexOf(dateDivider);
@@ -49,11 +49,10 @@ public class Minnim {
             String fromDate = message.substring(firstIndex + 1, secondIndex - 1).replaceFirst("from", "");
             String toDate = message.substring(secondIndex + 1).replaceFirst("to", "");
             Events event = new Events(message.substring(6, firstIndex - 1), fromDate, toDate);
-            this.tasks[i] = event;
-            i++;
+            this.tasks.add(event);
             System.out.println("Got it. I've added this task:\n");
-            System.out.println(i + ". " + event.getDescription() + "\n");
-            System.out.println("Now you have " + i + " tasks in the list.");
+            System.out.println(this.tasks.size() + ". " + event.getDescription() + "\n");
+            System.out.println("Now you have " + this.tasks.size() + " tasks in the list.");
         } catch (StringIndexOutOfBoundsException e) {
             throw new MinnimMissingDateException();
         }
@@ -62,9 +61,9 @@ public class Minnim {
     private void mark(String message) throws MinnimNoTaskFoundException {
         int taskNum = Integer.parseInt(message.substring(5).trim());
         try {
-            tasks[taskNum - 1].setMarked();
+            this.tasks.get(taskNum - 1).setMarked();
             System.out.println("Nice! I've marked this task as done: \n");
-            System.out.println(taskNum + ". " + tasks[taskNum - 1].getDescription());
+            System.out.println(taskNum + ". " + this.tasks.get(taskNum - 1).getDescription());
         } catch (NullPointerException e) {
             throw new MinnimNoTaskFoundException(taskNum);
         }
@@ -73,16 +72,16 @@ public class Minnim {
     private void unmark(String message) throws MinnimNoTaskFoundException {
         int taskNum = Character.getNumericValue(message.charAt(7));
         try {
-            tasks[taskNum - 1].setUnmarked();
+            this.tasks.get(taskNum - 1).setUnmarked();
             System.out.println("OK, I've marked this task as not done yet: \n");
-            System.out.println(taskNum + ". " + tasks[taskNum - 1].getDescription());
+            System.out.println(taskNum + ". " + this.tasks.get(taskNum - 1).getDescription());
         } catch (NullPointerException e) {
             throw new MinnimNoTaskFoundException(taskNum);
         }
     }
 
     private void chat() {
-        int i = 0;
+
         try {
             while (true) {
                 String message = s.nextLine();
@@ -92,19 +91,16 @@ public class Minnim {
                 }
 
                 if (message.equals("list")) {
-                    for (int j = 0; j < i; j++) {
-                        System.out.print(j + 1 + ". " + this.tasks[j].getDescription());
+                    for (int j = 0; j < this.tasks.size(); j++) {
+                        System.out.print(j + 1 + ". " + this.tasks.get(j).getDescription());
                         System.out.print("\n");
                     }
                 } else if (message.startsWith("todo")) {
-                    todo(message, i);
-                    i++;
+                    todo(message);
                 } else if (message.startsWith("deadline")) {
-                    deadline(message, i);
-                    i++;
+                    deadline(message);
                 } else if (message.startsWith("event")) {
-                    event(message, i);
-                    i++;
+                    event(message);
                 } else if (message.startsWith("mark")) {
                     mark(message);
                 } else if (message.startsWith("unmark")) {
