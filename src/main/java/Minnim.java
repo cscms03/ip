@@ -6,6 +6,15 @@ public class Minnim {
     private ArrayList<Task> tasks = new ArrayList<>();
     private final String dateDivider = "/";
 
+    private void listTasks() {
+        if (this.tasks.isEmpty()) {
+            System.out.println("Your task list is empty.");
+        } else {
+            for (int j = 0; j < this.tasks.size(); j++) {
+                System.out.print(j + 1 + ". " + this.tasks.get(j).getDescription() + "\n");
+            }
+        }
+    }
 
     private void todo(String message) throws MinnimMissingTaskDetailException {
         try {
@@ -58,7 +67,11 @@ public class Minnim {
         }
     }
 
-    private void mark(String message) throws MinnimNoTaskFoundException {
+    private void mark(String message) throws MinnimNoTaskFoundException, MinnimTargetTaskNumNotFoundException{
+        if (message.trim().length() == 4) {
+            // if only command is given without target task number
+            throw new MinnimTargetTaskNumNotFoundException();
+        }
         int taskNum = Integer.parseInt(message.substring(5).trim());
         try {
             this.tasks.get(taskNum - 1).setMarked();
@@ -69,7 +82,11 @@ public class Minnim {
         }
     }
 
-    private void unmark(String message) throws MinnimNoTaskFoundException {
+    private void unmark(String message) throws MinnimNoTaskFoundException, MinnimTargetTaskNumNotFoundException {
+        if (message.trim().length() == 6) {
+            // if only command is given without target task number
+            throw new MinnimTargetTaskNumNotFoundException();
+        }
         int taskNum = Integer.parseInt(message.substring(7).trim());
         try {
             this.tasks.get(taskNum - 1).setUnmarked();
@@ -80,7 +97,11 @@ public class Minnim {
         }
     }
 
-    private void delete(String message) throws MinnimNoTaskFoundException {
+    private void delete(String message) throws MinnimNoTaskFoundException, MinnimTargetTaskNumNotFoundException {
+        if (message.trim().length() == 6) {
+            // if only command is given without target task number
+            throw new MinnimTargetTaskNumNotFoundException();
+        }
         int taskNum = Integer.parseInt(message.substring(7).trim());
         try {
             Task taskToDelete = this.tasks.get(taskNum - 1);
@@ -96,33 +117,43 @@ public class Minnim {
     private void chat() {
         try {
             while (true) {
-                String message = s.nextLine();
+                String message = s.nextLine().trim();
                 if (message.equals("bye")) {
                     System.out.println("     Bye. Hope to see you again soon!");
                     break;
                 }
 
-                if (message.equals("list")) {
-                    for (int j = 0; j < this.tasks.size(); j++) {
-                        System.out.print(j + 1 + ". " + this.tasks.get(j).getDescription());
-                        System.out.print("\n");
-                    }
-                } else if (message.startsWith("todo")) {
-                    todo(message);
-                } else if (message.startsWith("deadline")) {
-                    deadline(message);
-                } else if (message.startsWith("event")) {
-                    event(message);
-                } else if (message.startsWith("mark")) {
-                    mark(message);
-                } else if (message.startsWith("unmark")) {
-                    unmark(message);
-                } else if (message.startsWith("delete")){
-                    delete(message);
+                String command = message.split(" ")[0];
+                TaskType taskType = TaskType.fromString(command);
+
+                if (taskType == null) {
+                    System.out.println("Please provide the type of your task: todo, deadline, or event / delete, list, mark, unmark");
                 } else {
-                    System.out.println("Please provide the type of your task: todo, deadline, or event");
+                    switch (taskType) {
+                        case TODO:
+                            todo(message);
+                            break;
+                        case DEADLINE:
+                            deadline(message);
+                            break;
+                        case EVENT:
+                            event(message);
+                            break;
+                        case MARK:
+                            mark(message);
+                            break;
+                        case UNMARK:
+                            unmark(message);
+                            break;
+                        case DELETE:
+                            delete(message);
+                            break;
+                        case LIST:
+                            listTasks();
+                            break;
+                        }
+                    }
                 }
-            }
         } catch (MinnimException e) {
             System.out.println(e);
         }
