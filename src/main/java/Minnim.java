@@ -64,24 +64,36 @@ public class Minnim {
             this.tasks.get(taskNum - 1).setMarked();
             System.out.println("Nice! I've marked this task as done: \n");
             System.out.println(taskNum + ". " + this.tasks.get(taskNum - 1).getDescription());
-        } catch (NullPointerException e) {
+        } catch (IndexOutOfBoundsException e) {
             throw new MinnimNoTaskFoundException(taskNum);
         }
     }
 
     private void unmark(String message) throws MinnimNoTaskFoundException {
-        int taskNum = Character.getNumericValue(message.charAt(7));
+        int taskNum = Integer.parseInt(message.substring(7).trim());
         try {
             this.tasks.get(taskNum - 1).setUnmarked();
             System.out.println("OK, I've marked this task as not done yet: \n");
             System.out.println(taskNum + ". " + this.tasks.get(taskNum - 1).getDescription());
-        } catch (NullPointerException e) {
+        } catch (IndexOutOfBoundsException e) {
+            throw new MinnimNoTaskFoundException(taskNum);
+        }
+    }
+
+    private void delete(String message) throws MinnimNoTaskFoundException {
+        int taskNum = Integer.parseInt(message.substring(7).trim());
+        try {
+            Task taskToDelete = this.tasks.get(taskNum - 1);
+            System.out.println("Noted. I've removed this task:");
+            System.out.println(taskToDelete.getDescription());
+            this.tasks.remove(taskNum - 1);
+            System.out.println("Now you have " + this.tasks.size() + " tasks in the list.");
+        } catch (IndexOutOfBoundsException e) {
             throw new MinnimNoTaskFoundException(taskNum);
         }
     }
 
     private void chat() {
-
         try {
             while (true) {
                 String message = s.nextLine();
@@ -105,6 +117,8 @@ public class Minnim {
                     mark(message);
                 } else if (message.startsWith("unmark")) {
                     unmark(message);
+                } else if (message.startsWith("delete")){
+                    delete(message);
                 } else {
                     System.out.println("Please provide the type of your task: todo, deadline, or event");
                 }
