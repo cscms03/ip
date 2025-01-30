@@ -23,4 +23,9 @@ public class Task {
     public String getDescription() {
         return  "[" + getStatusIcon() + "] " + this.description;
     }
+
+    public String toFileString() {
+        return this.getClass().getSimpleName() + " | " +
+                (isDone ? "1" : "0") + " | " + description;
+    }
 }

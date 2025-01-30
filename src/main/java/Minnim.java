@@ -1,10 +1,67 @@
+import java.io.*;
+import java.nio.file.Paths;
 import java.util.Scanner;
 import java.util.ArrayList;
+
 
 public class Minnim {
     private Scanner s = new Scanner(System.in);
     private ArrayList<Task> tasks = new ArrayList<>();
     private final String dateDivider = "/";
+    private static String DIR = "./data";
+    private static String FILENAME = "Minnim.txt";
+    private static String FILE_PATH = String.valueOf(Paths.get(Minnim.DIR, Minnim.FILENAME));
+
+    public Minnim() {
+        loadTasks();
+    }
+
+    private void saveTasks() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+            for (Task task : tasks) {
+                writer.write(task.toFileString());
+                System.out.println(task.toFileString());
+                writer.newLine();  // Adds a newline after each task
+                writer.flush();
+                System.out.println("Saved tasks to File");
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving tasks to file: " + e.getMessage());
+        }
+    }
+
+    private void loadTasks() {
+        try (Scanner scanner = new Scanner(new File(FILE_PATH))) {
+            while(scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] parts = line.split(" \\| ");
+                String type = parts[0];
+                boolean isDone = parts[1].equals("1");
+                String description = parts[2];
+
+                Task task = null;
+                if (type.equals("Todo")) {
+                    task = new Todo(description);
+                } else if (type.equals("Deadline")) {
+                    task = new Deadline(description, parts[3]);
+                } else if (type.equals("Events")) {
+                    task = new Events(description, parts[3], parts[4]);
+                }
+
+                if (task != null) {
+                    if (isDone) {
+                        task.setMarked();
+                    }
+                    tasks.add(task);
+                }
+            }
+            listTasks();
+        } catch (FileNotFoundException e) {
+            System.out.println("Task file not found. Starting with an empty task list.");
+        } catch (Exception e) {
+            System.out.println("Error loading tasks from file: " + e.getMessage());
+        }
+    }
 
     private void listTasks() {
         if (this.tasks.isEmpty()) {
@@ -120,6 +177,7 @@ public class Minnim {
                 String message = s.nextLine().trim();
                 if (message.equals("bye")) {
                     System.out.println("     Bye. Hope to see you again soon!");
+                    saveTasks();
                     break;
                 }
 

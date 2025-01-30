@@ -9,4 +9,11 @@ public class Deadline extends Task {
     public String getDescription() {
         return "[D][" + getStatusIcon() + "] " + this.description + " (by:" + this.date + ")" ;
     }
+
+    @Override
+    public String toFileString() {
+        // Format: Deadline | isDone | description | deadlineDate
+        return this.getClass().getSimpleName() + " | " +
+                (isDone ? "1" : "0") + " | " + this.description + " | " + date;
+    }
 }
