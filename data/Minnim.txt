@@ -1,3 +1,0 @@
-Events | 0 | internship |  12314 |  1293187
-Deadline | 0 | homework |  12312
-Todo | 0 | this
