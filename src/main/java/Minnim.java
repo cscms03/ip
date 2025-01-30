@@ -17,10 +17,8 @@ public class Minnim {
     }
 
     private void saveTasks() {
-
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
             for (Task task : tasks) {
-                // Assuming each task has a toFileString() method to convert it to a string
                 writer.write(task.toFileString());
                 System.out.println(task.toFileString());
                 writer.newLine();  // Adds a newline after each task
