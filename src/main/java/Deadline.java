@@ -1,19 +1,38 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 public class Deadline extends Task {
-    protected String date;
-    public Deadline(String description, String date) {
+    private String description;
+    private LocalDate deadline;
+
+    public Deadline(String description, String deadlineStr) {
         super(description);
-        this.date = date;
+        this.deadline = parseDeadline(deadlineStr);
     }
 
-    @Override
-    public String getDescription() {
-        return "[D][" + getStatusIcon() + "] " + this.description + " (by:" + this.date + ")" ;
+    private LocalDate parseDeadline(String deadlineStr) {
+        try {
+            // Assuming the format provided is yyyy-MM-dd HHmm (e.g., 2019-12-02 1800)
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            return LocalDate.parse(deadlineStr, formatter);
+        } catch (DateTimeParseException e) {
+            // Handle invalid date format here
+            System.out.println("Invalid date format. Please use yyyy-MM-dd.");
+            return null;
+        }
     }
 
     @Override
     public String toFileString() {
-        // Format: Deadline | isDone | description | deadlineDate
-        return this.getClass().getSimpleName() + " | " +
-                (isDone ? "1" : "0") + " | " + this.description + " | " + date;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return String.format("Deadline | %s | %s | %s", (isDone ? "1" : "0"),
+                super.description, deadline.format(formatter));
+    }
+
+    @Override
+    public String getDescription() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
+        return "[D]" + super.getDescription() + " (by: " + deadline.format(formatter) + ")";
     }
 }

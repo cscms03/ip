@@ -1,5 +1,11 @@
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import java.nio.file.Paths;
+
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -7,7 +13,7 @@ import java.util.ArrayList;
 public class Minnim {
     private Scanner s = new Scanner(System.in);
     private ArrayList<Task> tasks = new ArrayList<>();
-    private final String dateDivider = "/";
+    private final String DATE_DIVIDER = "/";
     private static String DIR = "./data";
     private static String FILENAME = "Minnim.txt";
     private static String FILE_PATH = String.valueOf(Paths.get(Minnim.DIR, Minnim.FILENAME));
@@ -91,9 +97,15 @@ public class Minnim {
                 // case where only "deadline" was entered without task nor dates
                 throw new MinnimMissingTaskDetailException();
             }
-            int index = message.indexOf(dateDivider);
-            String date = message.substring(index + 1).replaceFirst("by", "");
+            int index = message.indexOf(DATE_DIVIDER);
+            String date = message.substring(index + 1).replaceFirst("by", "").trim();
             Deadline deadline = new Deadline(message.substring(9, index - 1), date);
+
+            if (deadline == null) {
+                System.out.println("Please enter a valid deadline date in the format yyyy-MM-dd HHmm (e.g., 2023-01-30 1800).");
+                return; // Do not add this task to the list if the date is invalid
+            }
+
             this.tasks.add(deadline);
             System.out.println("Got it. I've added this task:\n");
             System.out.println(this.tasks.size() + ". " + deadline.getDescription() + "\n");
@@ -110,10 +122,10 @@ public class Minnim {
                 // case where only "event" was entered without task nor dates
                 throw new MinnimMissingTaskDetailException();
             }
-            int firstIndex = message.indexOf(dateDivider);
-            int secondIndex = message.indexOf(dateDivider, firstIndex + 1);
-            String fromDate = message.substring(firstIndex + 1, secondIndex - 1).replaceFirst("from", "");
-            String toDate = message.substring(secondIndex + 1).replaceFirst("to", "");
+            int firstIndex = message.indexOf(DATE_DIVIDER);
+            int secondIndex = message.indexOf(DATE_DIVIDER, firstIndex + 1);
+            String fromDate = message.substring(firstIndex + 1, secondIndex - 1).replaceFirst("from", "").trim();
+            String toDate = message.substring(secondIndex + 1).replaceFirst("to", "").trim();
             Events event = new Events(message.substring(6, firstIndex - 1), fromDate, toDate);
             this.tasks.add(event);
             System.out.println("Got it. I've added this task:\n");
