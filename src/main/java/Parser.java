@@ -9,7 +9,9 @@ public class Parser {
         this.storage = storage;
     }
 
-    public void parseCommand(String message) {
+    public void parseCommand(String message) throws
+            MinnimMissingTaskDetailException, MinnimMissingDateException,
+            MinnimTargetTaskNumNotFoundException, MinnimNoTaskFoundException {
         String[] words = message.split(" ", 2);
         String command = words[0];
 

@@ -14,7 +14,8 @@ public class Minnim {
         tasks.listTasks();
     }
 
-    public void run() {
+    public void run() throws MinnimMissingTaskDetailException, MinnimMissingDateException,
+            MinnimTargetTaskNumNotFoundException, MinnimNoTaskFoundException {
         ui.showWelcomeMessage();
         java.util.Scanner scanner = new java.util.Scanner(System.in);
 
@@ -24,7 +25,8 @@ public class Minnim {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws MinnimMissingTaskDetailException, MinnimMissingDateException,
+            MinnimTargetTaskNumNotFoundException, MinnimNoTaskFoundException {
         new Minnim("data/Minnim.txt").run();
     }
 }
