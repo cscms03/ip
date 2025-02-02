@@ -1,3 +1,5 @@
+package minnim.task;
+
 public enum TaskType {
     TODO("todo"),
     DEADLINE("deadline"),

@@ -1,8 +1,10 @@
+package minnim.task;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-public class Events extends Task{
+public class Events extends Task {
     private LocalDate from;
     private LocalDate to;
 

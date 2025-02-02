@@ -1,3 +1,13 @@
+package minnim.parser;
+
+import minnim.exception.MinnimMissingDateException;
+import minnim.exception.MinnimMissingTaskDetailException;
+import minnim.exception.MinnimNoTaskFoundException;
+import minnim.exception.MinnimTargetTaskNumNotFoundException;
+import minnim.task.TaskList;
+import minnim.ui.Ui;
+import minnim.storage.Storage;
+
 public class Parser {
     private TaskList taskList;
     private Ui ui;

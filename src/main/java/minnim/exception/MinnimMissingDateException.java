@@ -1,3 +1,5 @@
+package minnim.exception;
+
 public class MinnimMissingDateException extends MinnimException{
     @Override
     public String toString() {

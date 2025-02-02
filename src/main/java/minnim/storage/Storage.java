@@ -1,3 +1,11 @@
+package minnim.storage;
+
+import minnim.task.Deadline;
+import minnim.task.Events;
+import minnim.task.Task;
+import minnim.task.Todo;
+import minnim.ui.Ui;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,7 +29,7 @@ public class Storage {
         File file = new File(filePath);
 
         if (!file.exists()) {
-            ui.showMessage("Task file not found. Starting with an empty list.");
+            ui.showMessage("minnim.task.Task file not found. Starting with an empty list.");
             return tasks;
         }
 
@@ -34,11 +42,11 @@ public class Storage {
                 String description = parts[2];
 
                 Task task = null;
-                if (type.equals("Todo")) {
+                if (type.equals("minnim.task.Todo")) {
                     task = new Todo(description);
-                } else if (type.equals("Deadline")) {
+                } else if (type.equals("minnim.task.Deadline")) {
                     task = new Deadline(description, parts[3]);
-                } else if (type.equals("Events")) {
+                } else if (type.equals("minnim.task.Events")) {
                     task = new Events(description, parts[3], parts[4]);
                 }
 
@@ -51,7 +59,7 @@ public class Storage {
 
             }
         } catch (FileNotFoundException e) {
-            ui.showError("Task file not found.");
+            ui.showError("minnim.task.Task file not found.");
         } catch (Exception e) {
             ui.showError("Error loading tasks: " + e.getMessage());
         }

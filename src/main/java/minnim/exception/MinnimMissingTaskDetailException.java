@@ -1,3 +1,5 @@
+package minnim.exception;
+
 public class MinnimMissingTaskDetailException extends MinnimException{
     @Override
     public String toString() {

@@ -1,3 +1,5 @@
+package minnim.exception;
+
 public class MinnimTargetTaskNumNotFoundException extends MinnimException{
     @Override
     public String toString() {

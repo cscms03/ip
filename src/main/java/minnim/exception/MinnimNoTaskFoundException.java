@@ -1,3 +1,5 @@
+package minnim.exception;
+
 public class MinnimNoTaskFoundException extends MinnimException{
     private int taskNum;
     public MinnimNoTaskFoundException(int taskNum) {
