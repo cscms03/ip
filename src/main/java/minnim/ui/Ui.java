@@ -1,3 +1,7 @@
+package minnim.ui;
+
+import minnim.task.Task;
+
 public class Ui {
     public void showWelcomeMessage() {
         System.out.println("Hello! I'm Minnim.");
