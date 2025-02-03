@@ -39,7 +39,7 @@ public class Events extends Task {
     @Override
     public String toFileString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return String.format("EVENT | %s | %s | %s | %s", (isDone ? "1" : "0"),
+        return String.format("Event | %s | %s | %s | %s", (isDone ? "1" : "0"),
                 super.description, from.format(formatter), to.format(formatter));
     }
 

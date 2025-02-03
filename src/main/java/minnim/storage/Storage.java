@@ -29,7 +29,7 @@ public class Storage {
         File file = new File(filePath);
 
         if (!file.exists()) {
-            ui.showMessage("minnim.task.Task file not found. Starting with an empty list.");
+            ui.showMessage("Task file not found. Starting with an empty list.");
             return tasks;
         }
 
@@ -42,11 +42,11 @@ public class Storage {
                 String description = parts[2];
 
                 Task task = null;
-                if (type.equals("minnim.task.Todo")) {
+                if (type.equals("Todo")) {
                     task = new Todo(description);
-                } else if (type.equals("minnim.task.Deadline")) {
+                } else if (type.equals("Deadline")) {
                     task = new Deadline(description, parts[3]);
-                } else if (type.equals("minnim.task.Events")) {
+                } else if (type.equals("Event")) {
                     task = new Events(description, parts[3], parts[4]);
                 }
 
@@ -59,7 +59,7 @@ public class Storage {
 
             }
         } catch (FileNotFoundException e) {
-            ui.showError("minnim.task.Task file not found.");
+            ui.showError("Task file not found.");
         } catch (Exception e) {
             ui.showError("Error loading tasks: " + e.getMessage());
         }
