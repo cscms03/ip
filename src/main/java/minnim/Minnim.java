@@ -1,3 +1,5 @@
+package minnim;
+
 import minnim.exception.MinnimMissingDateException;
 import minnim.exception.MinnimMissingTaskDetailException;
 import minnim.exception.MinnimNoTaskFoundException;
@@ -36,6 +38,6 @@ public class Minnim {
 
     public static void main(String[] args) throws MinnimMissingTaskDetailException, MinnimMissingDateException,
             MinnimTargetTaskNumNotFoundException, MinnimNoTaskFoundException {
-        new Minnim("data/Minnim.txt").run();
+        new Minnim("data/minnim.Minnim.txt").run();
     }
 }
