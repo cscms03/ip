@@ -8,17 +8,35 @@ import minnim.task.TaskList;
 import minnim.ui.Ui;
 import minnim.storage.Storage;
 
+/**
+ * Parses and processes user commands.
+ */
 public class Parser {
     private TaskList taskList;
     private Ui ui;
     private Storage storage;
 
+    /**
+     * Constructs a Parser object.
+     *
+     * @param taskList The task list to manage tasks.
+     * @param ui       The user interface for displaying messages.
+     * @param storage  The storage handler for saving and loading tasks.
+     */
     public Parser(TaskList taskList, Ui ui, Storage storage) {
         this.taskList = taskList;
         this.ui = ui;
         this.storage = storage;
     }
-
+    /**
+     * Parses and executes the given command.
+     *
+     * @param message The user input command.
+     * @throws MinnimMissingTaskDetailException     If a task detail is missing.
+     * @throws MinnimMissingDateException          If a date is required but missing.
+     * @throws MinnimTargetTaskNumNotFoundException If a task number is missing.
+     * @throws MinnimNoTaskFoundException          If the specified task number does not exist.
+     */
     public void parseCommand(String message) throws
             MinnimMissingTaskDetailException, MinnimMissingDateException,
             MinnimTargetTaskNumNotFoundException, MinnimNoTaskFoundException {

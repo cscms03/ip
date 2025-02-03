@@ -7,18 +7,32 @@ import minnim.exception.MinnimMissingTaskDetailException;
 import minnim.exception.MinnimNoTaskFoundException;
 import minnim.exception.MinnimTargetTaskNumNotFoundException;
 import minnim.exception.MinnimException;
-
 import minnim.ui.Ui;
 
+
+/**
+ * Manages a list of tasks and provides operations to add, mark, unmark, delete, and list tasks.
+ */
 public class TaskList {
     private ArrayList<Task> tasks;
     private Ui ui;
 
+    /**
+     * Constructs a TaskList with the given list of tasks and user interface.
+     *
+     * @param tasks The list of tasks.
+     * @param ui    The user interface for displaying messages.
+     */
     public TaskList(ArrayList<Task> tasks, Ui ui) {
         this.tasks = tasks;
         this.ui = ui;
     }
 
+    /**
+     * Retrieves the list of tasks.
+     *
+     * @return The list of tasks.
+     */
     public ArrayList<Task> getTasks() {
         return tasks;
     }
@@ -59,7 +73,13 @@ public class TaskList {
             System.out.println(e);
         }
     }
-    
+
+    /**
+     * Adds a new Todo task to the task list.
+     *
+     * @param message The input command containing the task description.
+     * @throws MinnimMissingTaskDetailException If the task description is missing.
+     */
     public void addTodo(String message) throws MinnimMissingTaskDetailException {
         try {
             Todo todo = new Todo(message.substring(5));
@@ -70,6 +90,13 @@ public class TaskList {
         }
     }
 
+    /**
+     * Adds a new Deadline task to the task list.
+     *
+     * @param message The input command containing the task description and due date.
+     * @throws MinnimMissingDateException       If the due date is missing.
+     * @throws MinnimMissingTaskDetailException If the task description is missing.
+     */
     public void addDeadline(String message) throws MinnimMissingDateException, MinnimMissingTaskDetailException {
         try {
             if (message.length() == 8) {
@@ -87,6 +114,13 @@ public class TaskList {
         }
     }
 
+    /**
+     * Adds a new Event task to the task list.
+     *
+     * @param message The input command containing the task description and event dates.
+     * @throws MinnimMissingDateException       If the event dates are missing.
+     * @throws MinnimMissingTaskDetailException If the task description is missing.
+     */
     public void addEvent(String message) throws MinnimMissingDateException, MinnimMissingTaskDetailException {
         try {
             if (message.length() == 5) {
@@ -105,6 +139,13 @@ public class TaskList {
         }
     }
 
+    /**
+     * Marks a task as completed.
+     *
+     * @param message The input command specifying the task number to mark.
+     * @throws MinnimNoTaskFoundException           If the task number does not exist.
+     * @throws MinnimTargetTaskNumNotFoundException If no task number is provided.
+     */
     public void markTask(String message) throws MinnimNoTaskFoundException, MinnimTargetTaskNumNotFoundException {
         if (message.trim().length() == 4) {
             // if only command is given without target task number
@@ -120,6 +161,13 @@ public class TaskList {
         }
     }
 
+    /**
+     * Unmarks a completed task.
+     *
+     * @param message The input command specifying the task number to unmark.
+     * @throws MinnimNoTaskFoundException           If the task number does not exist.
+     * @throws MinnimTargetTaskNumNotFoundException If no task number is provided.
+     */
     public void unmarkTask(String message) throws MinnimNoTaskFoundException, MinnimTargetTaskNumNotFoundException {
         if (message.trim().length() == 6) {
             // if only command is given without target task number
@@ -135,6 +183,13 @@ public class TaskList {
         }
     }
 
+    /**
+     * Deletes a task from the list.
+     *
+     * @param message The input command specifying the task number to delete.
+     * @throws MinnimTargetTaskNumNotFoundException If no task number is provided.
+     * @throws MinnimNoTaskFoundException           If the task number does not exist.
+     */
     public void deleteTask(String message) throws MinnimTargetTaskNumNotFoundException, MinnimNoTaskFoundException {
         if (message.trim().length() == 6) {
             // if only command is given without target task number
@@ -149,6 +204,9 @@ public class TaskList {
         }
     }
 
+    /**
+     * Lists all tasks in the task list.
+     */
     public void listTasks() {
         if (tasks.isEmpty()) {
             ui.showMessage("Your task list is empty.");
