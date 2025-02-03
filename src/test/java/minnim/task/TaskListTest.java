@@ -1,17 +1,5 @@
 package minnim.task;
 
-import java.util.ArrayList;
-
-import minnim.exception.MinnimMissingDateException;
-import minnim.exception.MinnimMissingTaskDetailException;
-import minnim.exception.MinnimNoTaskFoundException;
-import minnim.exception.MinnimTargetTaskNumNotFoundException;
-
-import minnim.ui.Ui;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -20,6 +8,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import java.util.ArrayList;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import minnim.exception.MinnimMissingDateException;
+import minnim.exception.MinnimMissingTaskDetailException;
+import minnim.exception.MinnimNoTaskFoundException;
+import minnim.exception.MinnimTargetTaskNumNotFoundException;
+
+import minnim.ui.Ui;
 
 public class TaskListTest {
 

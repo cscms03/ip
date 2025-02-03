@@ -1,15 +1,15 @@
 package minnim.storage;
 
-import minnim.task.Deadline;
-import minnim.task.Events;
-import minnim.task.Todo;
-
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 
+import org.junit.jupiter.api.Test;
+
+import minnim.task.Deadline;
+import minnim.task.Events;
+import minnim.task.Todo;
 import minnim.task.Task;
 import minnim.ui.Ui;
 
