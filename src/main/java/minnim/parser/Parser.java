@@ -47,6 +47,9 @@ public class Parser {
             case "list":
                 taskList.listTasks();
                 break;
+            case "find":
+                taskList.find(message);
+                break;
             case "bye":
                 storage.saveTasks(taskList.getTasks());
                 ui.showGoodbyeMessage();
