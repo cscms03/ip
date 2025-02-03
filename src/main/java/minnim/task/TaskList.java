@@ -6,6 +6,8 @@ import minnim.exception.MinnimMissingDateException;
 import minnim.exception.MinnimMissingTaskDetailException;
 import minnim.exception.MinnimNoTaskFoundException;
 import minnim.exception.MinnimTargetTaskNumNotFoundException;
+import minnim.exception.MinnimException;
+
 import minnim.ui.Ui;
 
 public class TaskList {
@@ -21,6 +23,43 @@ public class TaskList {
         return tasks;
     }
 
+    /**
+     * Searches for tasks that contain the specified keyword in their description.
+     *
+     * The method checks if the message contains a valid keyword (i.e., after the "find" command)
+     * and searches the task descriptions for any match. If matching tasks are found, they are displayed to the user.
+     * If no tasks match the keyword, an appropriate message is shown.
+     *
+     * @param message the user's input, expected to be in the format "find <keyword>"
+     * @throws MinnimMissingTaskDetailException if no keyword is provided (i.e., only "find" is entered)
+     */
+    public void find(String message) throws MinnimMissingTaskDetailException {
+        try {
+            if (message.trim().length() == 4) {
+                // case where only "find" was entered without keyword
+                throw new MinnimMissingTaskDetailException();
+            }
+            String keyword = message.substring(5).trim();  // Extract the keyword from the message
+            ArrayList<Task> matchingTasks = new ArrayList<>();
+
+            for (Task task : tasks) {
+                if (task.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
+                    matchingTasks.add(task);
+                }
+            }
+            if (matchingTasks.isEmpty()) {
+                ui.showMessage("No matching tasks found.");
+            } else {
+                ui.showMessage("Here are the matching tasks in your list:");
+                for (int i = 0; i < matchingTasks.size(); i++) {
+                    ui.showMessage((i + 1) + ". " + matchingTasks.get(i).getDescription());
+                }
+            }
+        } catch (MinnimException e) {
+            System.out.println(e);
+        }
+    }
+    
     public void addTodo(String message) throws MinnimMissingTaskDetailException {
         try {
             Todo todo = new Todo(message.substring(5));
