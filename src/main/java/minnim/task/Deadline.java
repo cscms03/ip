@@ -28,7 +28,7 @@ public class Deadline extends Task {
     @Override
     public String toFileString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return String.format("minnim.task.Deadline | %s | %s | %s", (isDone ? "1" : "0"),
+        return String.format("Deadline | %s | %s | %s", (isDone ? "1" : "0"),
                 super.description, deadline.format(formatter));
     }
 
