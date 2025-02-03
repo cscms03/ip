@@ -1,19 +1,18 @@
 package minnim.storage;
 
-import minnim.task.Deadline;
-import minnim.task.Events;
-import minnim.task.Task;
-import minnim.task.Todo;
-import minnim.ui.Ui;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.FileWriter;
-
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import minnim.task.Deadline;
+import minnim.task.Events;
+import minnim.task.Task;
+import minnim.task.Todo;
+import minnim.ui.Ui;
 
 public class Storage {
     private String filePath;
