@@ -6,7 +6,6 @@ import minnim.task.Todo;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
@@ -32,6 +31,7 @@ public class StorageTest {
         ArrayList<Task> tasks = new ArrayList<>();
 
         tasks.add(deadlineTask);
+        eventTask.setMarked(); // see if storage class successfully loads marked tasks
         tasks.add(eventTask);
         tasks.add(todoTask);
 
@@ -41,7 +41,7 @@ public class StorageTest {
         assertEquals(3, loadedTasks.size(), "There should be three tasks loaded");
         assertEquals("[D][ ] Test deadline task (by: Feb 03 2025)",
                 loadedTasks.get(0).getDescription(), "Task description should match");
-        assertEquals("[E][ ] Test event task (from: Dec 12 2025 to: Dec 13 2025)",
+        assertEquals("[E][X] Test event task (from: Dec 12 2025 to: Dec 13 2025)",
                 loadedTasks.get(1).getDescription(), "Task description should match");
         assertEquals("[T][ ] Test todo task",
                 loadedTasks.get(2).getDescription(), "Task description should match");
