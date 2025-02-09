@@ -38,7 +38,7 @@ public class Events extends Task {
      */
     private LocalDate parseEvent(String dateStr) {
         try {
-            // Assuming the format provided is yyyy-MM-dd HHmm (e.g., 2019-12-02 1800)
+            // Assuming the format provided is yyyy-MM-dd (e.g., 2019-12-02)
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             return LocalDate.parse(dateStr, formatter);
         } catch (DateTimeParseException e) {

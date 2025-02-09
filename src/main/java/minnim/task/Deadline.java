@@ -30,7 +30,7 @@ public class Deadline extends Task {
      */
     private LocalDate parseDeadline(String deadlineStr) {
         try {
-            // Assuming the format provided is yyyy-MM-dd HHmm (e.g., 2019-12-02 1800)
+            // Assuming the format provided is yyyy-MM-dd (e.g., 2019-12-02)
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             return LocalDate.parse(deadlineStr, formatter);
         } catch (DateTimeParseException e) {
