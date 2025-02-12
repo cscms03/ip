@@ -55,8 +55,13 @@ public class Minnim {
 
         while (true) {
             String input = scanner.nextLine();
-            parser.parseCommand(input);
+            System.out.println(parser.parseCommand(input));
         }
+    }
+
+    public String getResponse(String message) throws MinnimMissingTaskDetailException, MinnimMissingDateException,
+            MinnimTargetTaskNumNotFoundException, MinnimNoTaskFoundException {
+        return parser.parseCommand(message);
     }
 
     public static void main(String[] args) throws MinnimMissingTaskDetailException, MinnimMissingDateException,

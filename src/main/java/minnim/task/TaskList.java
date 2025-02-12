@@ -9,6 +9,7 @@ import minnim.exception.MinnimTargetTaskNumNotFoundException;
 import minnim.exception.MinnimException;
 import minnim.ui.Ui;
 
+//TODO: Update JavaDoc as return values changed from void to String
 
 /**
  * Manages a list of tasks and provides operations to add, mark, unmark, delete, and list tasks.
@@ -46,10 +47,9 @@ public class TaskList {
      * @param message the user's input, expected to be in the format "find <keyword>"
      * @throws MinnimMissingTaskDetailException if no keyword is provided (i.e., only "find" is entered)
      */
-    public void find(String message) throws MinnimMissingTaskDetailException {
+    public String find(String message) throws MinnimMissingTaskDetailException {
         try {
             if (message.trim().length() == 4) {
-                // case where only "find" was entered without keyword
                 throw new MinnimMissingTaskDetailException();
             }
             String keyword = message.substring(5).trim();  // Extract the keyword from the message
@@ -61,15 +61,16 @@ public class TaskList {
                 }
             }
             if (matchingTasks.isEmpty()) {
-                ui.showMessage("No matching tasks found.");
+                return ui.showMessage("No matching tasks found.");
             } else {
-                ui.showMessage("Here are the matching tasks in your list:");
+                StringBuilder response = new StringBuilder("Here are the matching tasks in your list:\n");
                 for (int i = 0; i < matchingTasks.size(); i++) {
-                    ui.showMessage((i + 1) + ". " + matchingTasks.get(i).getDescription());
+                    response.append((i + 1)).append(". ").append(matchingTasks.get(i).getDescription()).append("\n");
                 }
+                return response.toString();
             }
         } catch (MinnimException e) {
-            System.out.println(e);
+            return ui.showError(e.getMessage());
         }
     }
 
@@ -79,11 +80,11 @@ public class TaskList {
      * @param message The input command containing the task description.
      * @throws MinnimMissingTaskDetailException If the task description is missing.
      */
-    public void addTodo(String message) throws MinnimMissingTaskDetailException {
+    public String addTodo(String message) throws MinnimMissingTaskDetailException {
         try {
             Todo todo = new Todo(message.substring(5));
             tasks.add(todo);
-            ui.showTaskAdded(todo, tasks.size());
+            return ui.showTaskAdded(todo, tasks.size());
         } catch (StringIndexOutOfBoundsException e) {
             throw new MinnimMissingTaskDetailException();
         }
@@ -96,19 +97,17 @@ public class TaskList {
      * @throws MinnimMissingDateException       If the due date is missing.
      * @throws MinnimMissingTaskDetailException If the task description is missing.
      */
-    public void addDeadline(String message) throws MinnimMissingDateException, MinnimMissingTaskDetailException {
+    public String addDeadline(String message) throws MinnimMissingDateException, MinnimMissingTaskDetailException {
         try {
             if (message.length() == 8) {
-                // case where only "deadline" was entered without task nor dates
                 throw new MinnimMissingTaskDetailException();
             }
             int index = message.indexOf("/");
             String date = message.substring(index + 1).replaceFirst("by", "").trim();
             Deadline deadline = new Deadline(message.substring(9, index - 1), date);
             tasks.add(deadline);
-            ui.showTaskAdded(deadline, tasks.size());
+            return ui.showTaskAdded(deadline, tasks.size());
         } catch (StringIndexOutOfBoundsException e) {
-            // case where deadline and task details were given but missing a date
             throw new MinnimMissingDateException();
         }
     }
@@ -120,10 +119,9 @@ public class TaskList {
      * @throws MinnimMissingDateException       If the event dates are missing.
      * @throws MinnimMissingTaskDetailException If the task description is missing.
      */
-    public void addEvent(String message) throws MinnimMissingDateException, MinnimMissingTaskDetailException {
+    public String addEvent(String message) throws MinnimMissingDateException, MinnimMissingTaskDetailException {
         try {
             if (message.length() == 5) {
-                // case where only "event" was entered without task nor dates
                 throw new MinnimMissingTaskDetailException();
             }
             int firstIndex = message.indexOf("/");
@@ -132,7 +130,7 @@ public class TaskList {
             String toDate = message.substring(secondIndex + 1).replaceFirst("to", "").trim();
             Events event = new Events(message.substring(6, firstIndex - 1), fromDate, toDate);
             tasks.add(event);
-            ui.showTaskAdded(event, tasks.size());
+            return ui.showTaskAdded(event, tasks.size());
         } catch (StringIndexOutOfBoundsException e) {
             throw new MinnimMissingDateException();
         }
@@ -145,16 +143,15 @@ public class TaskList {
      * @throws MinnimNoTaskFoundException           If the task number does not exist.
      * @throws MinnimTargetTaskNumNotFoundException If no task number is provided.
      */
-    public void markTask(String message) throws MinnimNoTaskFoundException, MinnimTargetTaskNumNotFoundException {
+    public String markTask(String message) throws MinnimNoTaskFoundException, MinnimTargetTaskNumNotFoundException {
         if (message.trim().length() == 4) {
-            // if only command is given without target task number
             throw new MinnimTargetTaskNumNotFoundException();
         }
         int taskNum = Integer.parseInt(message.substring(5).trim());
         try {
             Task task = tasks.get(taskNum - 1);
             task.setMarked();
-            ui.showTaskMarked(task);
+            return ui.showTaskMarked(task);
         } catch (IndexOutOfBoundsException e) {
             throw new MinnimNoTaskFoundException(taskNum);
         }
@@ -167,16 +164,15 @@ public class TaskList {
      * @throws MinnimNoTaskFoundException           If the task number does not exist.
      * @throws MinnimTargetTaskNumNotFoundException If no task number is provided.
      */
-    public void unmarkTask(String message) throws MinnimNoTaskFoundException, MinnimTargetTaskNumNotFoundException {
+    public String unmarkTask(String message) throws MinnimNoTaskFoundException, MinnimTargetTaskNumNotFoundException {
         if (message.trim().length() == 6) {
-            // if only command is given without target task number
             throw new MinnimTargetTaskNumNotFoundException();
         }
         int taskNum = Integer.parseInt(message.substring(7).trim());
         try {
             Task task = tasks.get(taskNum - 1);
             task.setUnmarked();
-            ui.showTaskUnmarked(task);
+            return ui.showTaskUnmarked(task);
         } catch (IndexOutOfBoundsException e) {
             throw new MinnimNoTaskFoundException(taskNum);
         }
@@ -189,15 +185,14 @@ public class TaskList {
      * @throws MinnimTargetTaskNumNotFoundException If no task number is provided.
      * @throws MinnimNoTaskFoundException           If the task number does not exist.
      */
-    public void deleteTask(String message) throws MinnimTargetTaskNumNotFoundException, MinnimNoTaskFoundException {
+    public String deleteTask(String message) throws MinnimTargetTaskNumNotFoundException, MinnimNoTaskFoundException {
         if (message.trim().length() == 6) {
-            // if only command is given without target task number
             throw new MinnimTargetTaskNumNotFoundException();
         }
         int taskNum = Integer.parseInt(message.substring(7).trim());
         try {
             Task task = tasks.remove(taskNum - 1);
-            ui.showTaskDeleted(task, tasks.size());
+            return ui.showTaskDeleted(task, tasks.size());
         } catch (IndexOutOfBoundsException e) {
             throw new MinnimNoTaskFoundException(taskNum);
         }
@@ -206,13 +201,15 @@ public class TaskList {
     /**
      * Lists all tasks in the task list.
      */
-    public void listTasks() {
+    public String listTasks() {
         if (tasks.isEmpty()) {
-            ui.showMessage("Your task list is empty.");
+            return ui.showMessage("Your task list is empty.");
         } else {
+            StringBuilder taskListString = new StringBuilder();
             for (int j = 0; j < tasks.size(); j++) {
-                ui.showMessage((j + 1) + ". " + tasks.get(j).getDescription());
+                taskListString.append((j + 1)).append(". ").append(tasks.get(j).getDescription()).append("\n");
             }
+            return taskListString.toString();
         }
     }
 }

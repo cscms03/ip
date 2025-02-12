@@ -3,46 +3,39 @@ package minnim.ui;
 import minnim.task.Task;
 
 public class Ui {
-    public void showWelcomeMessage() {
-        System.out.println("Hello! I'm Minnim.");
-        System.out.println("What can I do for you?");
+    public String showWelcomeMessage() {
+        return "Hello! I'm Minnim.\nWhat can I do for you?";
     }
 
-    public void showGoodbyeMessage() {
-        System.out.println("Bye. Hope to see you again soon!");
+    public String showGoodbyeMessage() {
+        return "Bye. Hope to see you again soon!";
+    }
+    public String showMessage(String message) {
+        return message;
     }
 
-    public void showMessage(String message) {
-        System.out.println(message);
+    public String showError(String errorMessage) {
+        return "Error: " + errorMessage;
     }
 
-    public void showError(String errorMessage) {
-        System.out.println("Error: " + errorMessage);
+    public String showTaskAdded(Task task, int size) {
+        return "Got it. I've added this task:\n" + task.getDescription() + "\nNow you have " + size + " tasks in the list.";
     }
 
-    public void showTaskAdded(Task task, int size) {
-        System.out.println("Got it. I've added this task:");
-        System.out.println(task.getDescription());
-        System.out.println("Now you have " + size + " tasks in the list.");
+    public String showTaskDeleted(Task task, int size) {
+        return "Noted. I've removed this task:\n" + task.getDescription() + "\nNow you have " + size + " tasks in the list.";
     }
 
-    public void showTaskDeleted(Task task, int size) {
-        System.out.println("Noted. I've removed this task:");
-        System.out.println(task.getDescription());
-        System.out.println("Now you have " + size + " tasks in the list.");
+    public String showTaskMarked(Task task) {
+        return "Nice! I've marked this task as done:\n" + task.getDescription();
     }
 
-    public void showTaskMarked(Task task) {
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println(task.getDescription());
+    public String showTaskUnmarked(Task task) {
+        return "OK, I've marked this task as not done yet:\n" + task.getDescription();
     }
 
-    public void showTaskUnmarked(Task task) {
-        System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println(task.getDescription());
-    }
-
-    public void showUnknownCommandMessage() {
-        System.out.println("Unknown command. Please try again.");
+    public String showUnknownCommandMessage() {
+        return "Unknown command. Please try again.";
     }
 }
+
