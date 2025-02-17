@@ -38,39 +38,46 @@ public class TaskList {
         return tasks;
     }
 
-    /**
-     * Searches for tasks that contain the specified keyword in their description.
-     * The method checks if the message contains a valid keyword (i.e., after the "find" command)
-     * and searches the task descriptions for any match. If matching tasks are found, they are displayed to the user.
-     * If no tasks match the keyword, an appropriate message is shown.
-     *
-     * @param message the user's input, expected to be in the format "find <keyword>"
-     * @throws MinnimMissingTaskDetailException if no keyword is provided (i.e., only "find" is entered)
-     */
     public String find(String message) throws MinnimMissingTaskDetailException {
         try {
-            if (message.trim().length() == 4) {
-                throw new MinnimMissingTaskDetailException();
-            }
-            String keyword = message.substring(5).trim();  // Extract the keyword from the message
-            ArrayList<Task> matchingTasks = new ArrayList<>();
-
-            for (Task task : tasks) {
-                if (task.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
-                    matchingTasks.add(task);
-                }
-            }
-            if (matchingTasks.isEmpty()) {
-                return ui.showMessage("No matching tasks found.");
-            } else {
-                StringBuilder response = new StringBuilder("Here are the matching tasks in your list:\n");
-                for (int i = 0; i < matchingTasks.size(); i++) {
-                    response.append((i + 1)).append(". ").append(matchingTasks.get(i).getDescription()).append("\n");
-                }
-                return response.toString();
-            }
+            validateFindCommand(message);
+            String keyword = extractKeyword(message);
+            ArrayList<Task> matchingTasks = findMatchingTasks(keyword);
+            return generateResponse(matchingTasks);
         } catch (MinnimException e) {
             return ui.showError(e.getMessage());
+        }
+    }
+
+    private void validateFindCommand(String message) throws MinnimMissingTaskDetailException {
+        if (message.trim().length() == 4) {
+            throw new MinnimMissingTaskDetailException();
+        }
+    }
+
+    private String extractKeyword(String message) {
+        return message.substring(5).trim();  // Extract the keyword from the message
+    }
+
+    private ArrayList<Task> findMatchingTasks(String keyword) {
+        ArrayList<Task> matchingTasks = new ArrayList<>();
+        for (Task task : tasks) {
+            if (task.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
+                matchingTasks.add(task);
+            }
+        }
+        return matchingTasks;
+    }
+
+    private String generateResponse(ArrayList<Task> matchingTasks) {
+        if (matchingTasks.isEmpty()) {
+            return ui.showMessage("No matching tasks found.");
+        } else {
+            StringBuilder response = new StringBuilder("Here are the matching tasks in your list:\n");
+            for (int i = 0; i < matchingTasks.size(); i++) {
+                response.append((i + 1)).append(". ").append(matchingTasks.get(i).getDescription()).append("\n");
+            }
+            return response.toString();
         }
     }
 
