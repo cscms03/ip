@@ -15,7 +15,8 @@ import minnim.task.Todo;
 import minnim.ui.Ui;
 
 /**
- * Handles loading and saving tasks to a file.
+ * Handles loading and saving tasks to a file. It reads tasks from a file and parses them into
+ * task objects, and it also saves the tasks back to the file.
  */
 public class Storage {
     private String filePath;
@@ -32,6 +33,11 @@ public class Storage {
         this.ui = ui;
     }
 
+    /**
+     * Reads all lines from the task file and returns them as a list of strings.
+     *
+     * @return A list of strings representing the lines in the task file.
+     */
     private ArrayList<String> readFile() {
         ArrayList<String> lines = new ArrayList<>();
         try (Scanner scanner = new Scanner(new File(filePath))) {
@@ -46,6 +52,12 @@ public class Storage {
         return lines;
     }
 
+    /**
+     * Creates a task from a line in the task file.
+     *
+     * @param line The line from the task file.
+     * @return A Task object created from the line, or null if the task type is invalid.
+     */
     private Task createTaskFromLine(String line) {
         String[] parts = line.split(" \\| ");
         String type = parts[0];
@@ -65,6 +77,11 @@ public class Storage {
         return task;
     }
 
+    /**
+     * Loads tasks from the task file and returns them as a list of Task objects.
+     *
+     * @return A list of Task objects loaded from the task file.
+     */
     public ArrayList<Task> loadTasks() {
         ArrayList<Task> tasks = new ArrayList<>();
         ArrayList<String> lines = readFile();
@@ -84,7 +101,7 @@ public class Storage {
     }
 
     /**
-     * Saves the given list of tasks to the specified file.
+     * Saves the given list of tasks to the specified task file.
      *
      * @param tasks The list of tasks to be saved.
      */

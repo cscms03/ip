@@ -38,6 +38,13 @@ public class TaskList {
         return tasks;
     }
 
+    /**
+     * Finds tasks that match the given keyword.
+     *
+     * @param message The message containing the keyword to search for.
+     * @return A string with the result of the search (tasks found or a message if none found).
+     * @throws MinnimMissingTaskDetailException If no keyword is provided.
+     */
     public String find(String message) throws MinnimMissingTaskDetailException {
         try {
             validateFindCommand(message);
@@ -49,16 +56,34 @@ public class TaskList {
         }
     }
 
+    /**
+     * Validates the find command to ensure a keyword is provided.
+     *
+     * @param message The message containing the find command.
+     * @throws MinnimMissingTaskDetailException If the message contains no keyword.
+     */
     private void validateFindCommand(String message) throws MinnimMissingTaskDetailException {
         if (message.trim().length() == 4) {
             throw new MinnimMissingTaskDetailException();
         }
     }
 
+    /**
+     * Extracts the keyword from the given message.
+     *
+     * @param message The message containing the keyword.
+     * @return The extracted keyword.
+     */
     private String extractKeyword(String message) {
         return message.substring(5).trim();  // Extract the keyword from the message
     }
 
+    /**
+     * Finds tasks that contain the given keyword.
+     *
+     * @param keyword The keyword to search for in task descriptions.
+     * @return A list of tasks that contain the keyword.
+     */
     private ArrayList<Task> findMatchingTasks(String keyword) {
         ArrayList<Task> matchingTasks = new ArrayList<>();
         for (Task task : tasks) {
@@ -69,6 +94,12 @@ public class TaskList {
         return matchingTasks;
     }
 
+    /**
+     * Generates a response message based on the found tasks.
+     *
+     * @param matchingTasks The list of tasks found.
+     * @return A string response with matching tasks or a message if none are found.
+     */
     private String generateResponse(ArrayList<Task> matchingTasks) {
         if (matchingTasks.isEmpty()) {
             return ui.showMessage("No matching tasks found.");
@@ -85,6 +116,7 @@ public class TaskList {
      * Adds a new Todo task to the task list.
      *
      * @param message The input command containing the task description.
+     * @return A string confirming that the task was added.
      * @throws MinnimMissingTaskDetailException If the task description is missing.
      */
     public String addTodo(String message) throws MinnimMissingTaskDetailException {
@@ -101,6 +133,7 @@ public class TaskList {
      * Adds a new Deadline task to the task list.
      *
      * @param message The input command containing the task description and due date.
+     * @return A string confirming that the task was added.
      * @throws MinnimMissingDateException       If the due date is missing.
      * @throws MinnimMissingTaskDetailException If the task description is missing.
      */
@@ -123,6 +156,7 @@ public class TaskList {
      * Adds a new Event task to the task list.
      *
      * @param message The input command containing the task description and event dates.
+     * @return A string confirming that the task was added.
      * @throws MinnimMissingDateException       If the event dates are missing.
      * @throws MinnimMissingTaskDetailException If the task description is missing.
      */
@@ -147,6 +181,7 @@ public class TaskList {
      * Marks a task as completed.
      *
      * @param message The input command specifying the task number to mark.
+     * @return A string confirming that the task was marked as completed.
      * @throws MinnimNoTaskFoundException           If the task number does not exist.
      * @throws MinnimTargetTaskNumNotFoundException If no task number is provided.
      */
@@ -168,6 +203,7 @@ public class TaskList {
      * Unmarks a completed task.
      *
      * @param message The input command specifying the task number to unmark.
+     * @return A string confirming that the task was unmarked.
      * @throws MinnimNoTaskFoundException           If the task number does not exist.
      * @throws MinnimTargetTaskNumNotFoundException If no task number is provided.
      */
@@ -189,6 +225,7 @@ public class TaskList {
      * Deletes a task from the list.
      *
      * @param message The input command specifying the task number to delete.
+     * @return A string confirming that the task was deleted.
      * @throws MinnimTargetTaskNumNotFoundException If no task number is provided.
      * @throws MinnimNoTaskFoundException           If the task number does not exist.
      */
@@ -207,6 +244,8 @@ public class TaskList {
 
     /**
      * Lists all tasks in the task list.
+     *
+     * @return A string containing all tasks in the list.
      */
     public String listTasks() {
         if (tasks.isEmpty()) {

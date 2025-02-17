@@ -16,6 +16,11 @@ import minnim.exception.MinnimMissingTaskDetailException;
 import minnim.exception.MinnimNoTaskFoundException;
 import minnim.exception.MinnimTargetTaskNumNotFoundException;
 
+/**
+ * Represents the main window of the Minnim application, which handles user input,
+ * communicates with the Minnim backend to get responses, and displays the dialogue
+ * between the user and Minnim.
+ */
 public class MainWindow extends AnchorPane {
     @FXML
     private ScrollPane scrollPane;
@@ -30,6 +35,10 @@ public class MainWindow extends AnchorPane {
     private Image userImage = new Image(this.getClass().getResourceAsStream("/minnim.png"));
     private Image minnimImage = new Image(this.getClass().getResourceAsStream("/minnim.png"));
 
+    /**
+     * Initializes the main window with default settings and displays a greeting message
+     * from Minnim when the application starts.
+     */
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogueContainer.heightProperty());
@@ -39,10 +48,26 @@ public class MainWindow extends AnchorPane {
         dialogueContainer.getChildren().add(DialogueBox.getMinnimDialogue(greeting, minnimImage));
     }
 
+    /**
+     * Sets the Minnim object that will be used for processing user input and generating responses.
+     *
+     * @param minnim The Minnim instance used to generate responses.
+     */
     public void setMinnim(Minnim minnim) {
         this.minnim = minnim;
     }
 
+    /**
+     * Handles the user's input when the "Send" button is clicked.
+     * It sends the user input to Minnim, retrieves a response,
+     * and updates the dialogue container with the user's message and Minnim's response.
+     * Exits the application if the user inputs "bye".
+     *
+     * @throws MinnimMissingTaskDetailException If the task description is missing.
+     * @throws MinnimMissingDateException If the date information for a task is missing.
+     * @throws MinnimTargetTaskNumNotFoundException If no task number is provided for task operations.
+     * @throws MinnimNoTaskFoundException If the specified task number cannot be found.
+     */
     @FXML
     private void handleUserInput() throws MinnimMissingTaskDetailException, MinnimMissingDateException,
             MinnimTargetTaskNumNotFoundException, MinnimNoTaskFoundException {
