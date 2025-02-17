@@ -49,6 +49,8 @@ public class Parser {
             MinnimMissingTaskDetailException, MinnimMissingDateException,
             MinnimTargetTaskNumNotFoundException, MinnimNoTaskFoundException {
 
+        assert message != null && !message.trim().isEmpty() : "Command message cannot be null or empty";
+
         String[] words = message.split(" ", 2);
         String command = words[0];
         String response = "";
@@ -86,6 +88,7 @@ public class Parser {
         default:
             response = ui.showUnknownCommandMessage();
         }
+        assert response != null : "Response cannot be null";
         return response;
     }
 }

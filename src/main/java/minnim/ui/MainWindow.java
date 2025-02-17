@@ -44,6 +44,7 @@ public class MainWindow extends AnchorPane {
         scrollPane.vvalueProperty().bind(dialogueContainer.heightProperty());
         sendButton.setFont(Font.font("Helvetica"));
         userInput.setFont(Font.font("Helvetica"));
+        assert minnimImage != null : "Minnim image must not be null";
         String greeting = "Hello! I'm Minnim.\nWhat can I do for you?";
         dialogueContainer.getChildren().add(DialogueBox.getMinnimDialogue(greeting, minnimImage));
     }
@@ -54,6 +55,7 @@ public class MainWindow extends AnchorPane {
      * @param minnim The Minnim instance used to generate responses.
      */
     public void setMinnim(Minnim minnim) {
+        assert minnim != null : "Minnim instance must not be null";
         this.minnim = minnim;
     }
 

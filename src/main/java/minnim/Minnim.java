@@ -28,6 +28,8 @@ public class Minnim {
      * @param filePath the file path where task data is stored
      */
     public Minnim(String filePath) {
+        assert filePath != null && !filePath.trim().isEmpty() : "File path cannot be null or empty";
+
         this.ui = new Ui();
         this.storage = new Storage(filePath, ui);
         this.tasks = new TaskList(storage.loadTasks(), ui);

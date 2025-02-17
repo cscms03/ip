@@ -106,6 +106,8 @@ public class Storage {
      * @param tasks The list of tasks to be saved.
      */
     public void saveTasks(ArrayList<Task> tasks) {
+        assert tasks != null : "Task list cannot be null";
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (Task task : tasks) {
                 writer.write(task.toFileString());
