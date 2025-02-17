@@ -23,11 +23,6 @@ public class Main extends Application {
     private Image userImage = new Image(this.getClass().getResourceAsStream("/minnim.png"));
     private Image minnimImage = new Image(this.getClass().getResourceAsStream("/minnim.png"));
 
-    private ScrollPane scrollPane;
-    private VBox dialogContainer;
-    private TextField userInput;
-    private Button sendButton;
-    private Scene scene;
 
     private Minnim minnim = new Minnim("data/minnim.Minnim.txt");
 
