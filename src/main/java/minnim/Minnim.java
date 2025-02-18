@@ -61,11 +61,31 @@ public class Minnim {
         }
     }
 
+    /**
+     * Returns the response to the user message by parsing the command and executing corresponding actions.
+     *
+     * @param message The user input message.
+     * @return The response generated after parsing and executing the command.
+     * @throws MinnimMissingTaskDetailException if a task detail is missing during command parsing
+     * @throws MinnimMissingDateException if a date is missing during command parsing
+     * @throws MinnimTargetTaskNumNotFoundException if the task number is not found during marking or deleting
+     * @throws MinnimNoTaskFoundException if no task is found with the specified task number
+     */
     public String getResponse(String message) throws MinnimMissingTaskDetailException, MinnimMissingDateException,
             MinnimTargetTaskNumNotFoundException, MinnimNoTaskFoundException {
         return parser.parseCommand(message);
     }
 
+    /**
+     * The main method that launches the Minnim application.
+     * It creates a new instance of Minnim and runs it.
+     *
+     * @param args The command-line arguments (not used).
+     * @throws MinnimMissingTaskDetailException if a task detail is missing during command parsing
+     * @throws MinnimMissingDateException if a date is missing during command parsing
+     * @throws MinnimTargetTaskNumNotFoundException if the task number is not found during marking or deleting
+     * @throws MinnimNoTaskFoundException if no task is found with the specified task number
+     */
     public static void main(String[] args) throws MinnimMissingTaskDetailException, MinnimMissingDateException,
             MinnimTargetTaskNumNotFoundException, MinnimNoTaskFoundException {
         new Minnim("data/minnim.Minnim.txt").run();
