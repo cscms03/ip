@@ -8,10 +8,9 @@ import minnim.task.TaskList;
 import minnim.ui.Ui;
 import minnim.storage.Storage;
 
-//TODO: Update JavaDoc as return value changed from void to String
-
 /**
- * Parses and processes user commands.
+ * Parses and processes user commands by delegating tasks to the appropriate methods
+ * in the TaskList, Storage, and Ui components.
  */
 public class Parser {
     private TaskList taskList;
@@ -19,7 +18,8 @@ public class Parser {
     private Storage storage;
 
     /**
-     * Constructs a Parser object.
+     * Constructs a Parser object that processes user commands and interacts with
+     * the task list, user interface, and storage.
      *
      * @param taskList The task list to manage tasks.
      * @param ui       The user interface for displaying messages.
@@ -30,10 +30,16 @@ public class Parser {
         this.ui = ui;
         this.storage = storage;
     }
+
     /**
-     * Parses and executes the given command.
+     * Parses and executes the given user command, delegating the appropriate operations
+     * to the TaskList methods and handling responses.
+     *
+     * Based on the command, this method may add tasks, mark/unmark tasks, delete tasks,
+     * list all tasks, search for tasks, or exit the program.
      *
      * @param message The user input command.
+     * @return The response message generated after executing the command.
      * @throws MinnimMissingTaskDetailException     If a task detail is missing.
      * @throws MinnimMissingDateException          If a date is required but missing.
      * @throws MinnimTargetTaskNumNotFoundException If a task number is missing.
@@ -42,6 +48,8 @@ public class Parser {
     public String parseCommand(String message) throws
             MinnimMissingTaskDetailException, MinnimMissingDateException,
             MinnimTargetTaskNumNotFoundException, MinnimNoTaskFoundException {
+
+        assert message != null && !message.trim().isEmpty() : "Command message cannot be null or empty";
 
         String[] words = message.split(" ", 2);
         String command = words[0];
@@ -80,6 +88,7 @@ public class Parser {
         default:
             response = ui.showUnknownCommandMessage();
         }
+        assert response != null : "Response cannot be null";
         return response;
     }
 }
