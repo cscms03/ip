@@ -19,21 +19,19 @@ public class Ui {
     }
 
     public String showTaskAdded(Task task, int size) {
-        return String.format("Got it. I've added this task:\n%s\nNow you have %d tasks in the list.",
-                task.getDescription(), size);
+        return "Got it. I've added this task:\n" + task.getDescription() + "\nNow you have " + size + " tasks in the list.";
     }
 
     public String showTaskDeleted(Task task, int size) {
-        return String.format("Noted. I've removed this task:\n%s\nNow you have %d tasks in the list.",
-                task.getDescription(), size);
+        return "Noted. I've removed this task:\n" + task.getDescription() + "\nNow you have " + size + " tasks in the list.";
     }
 
     public String showTaskMarked(Task task) {
-        return String.format("Nice! I've marked this task as done:\n%s", task.getDescription());
+        return "Nice! I've marked this task as done:\n" + task.getDescription();
     }
 
     public String showTaskUnmarked(Task task) {
-        return String.format("OK, I've marked this task as not done yet:\n%s", task.getDescription());
+        return "OK, I've marked this task as not done yet:\n" + task.getDescription();
     }
 
     public String showUnknownCommandMessage() {

@@ -5,27 +5,32 @@ import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Region;
 
+import minnim.ui.DialogueBox;
 import minnim.ui.MainWindow;
 
-/**
- * The entry point of the Minnim application. This class initializes and launches the JavaFX
- * application window, sets up the user interface, and integrates the Minnim chatbot functionality.
- */
+
 public class Main extends Application {
 
     private Image userImage = new Image(this.getClass().getResourceAsStream("/minnim.png"));
     private Image minnimImage = new Image(this.getClass().getResourceAsStream("/minnim.png"));
+
+    private ScrollPane scrollPane;
+    private VBox dialogContainer;
+    private TextField userInput;
+    private Button sendButton;
+    private Scene scene;
+
     private Minnim minnim = new Minnim("data/minnim.Minnim.txt");
 
-    /**
-     * The main entry point for launching the JavaFX application.
-     *
-     * @param stage The primary stage for the application, where the scene is set.
-     */
     @Override
     public void start(Stage stage) {
         try {
