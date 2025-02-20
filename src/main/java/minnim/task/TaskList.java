@@ -97,7 +97,7 @@ public class TaskList {
      * @return A confirmation message that the task was added.
      * @throws MinnimMissingTaskDetailException If the task description is missing.
      */
-    public String addTodo(String message) throws MinnimMissingTaskDetailException {
+    public String addTodo(String message) {
         try {
             Todo todo = new Todo(message.substring(5));
             tasks.add(todo);
