@@ -54,14 +54,12 @@ public class Storage {
                 boolean isDone = parts[1].equals("1");
                 String description = parts[2];
 
-                Task task = null;
-                if (type.equals("Todo")) {
-                    task = new Todo(description);
-                } else if (type.equals("Deadline")) {
-                    task = new Deadline(description, parts[3]);
-                } else if (type.equals("Event")) {
-                    task = new Events(description, parts[3], parts[4]);
-                }
+                Task task = switch (type) {
+                    case "Todo" -> new Todo(description);
+                    case "Deadline" -> new Deadline(description, parts[3]);
+                    case "Event" -> new Events(description, parts[3], parts[4]);
+                    default -> null;
+                };
 
                 if (task != null) {
                     if (isDone) {

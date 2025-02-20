@@ -6,6 +6,7 @@ import minnim.exception.MinnimNoTaskFoundException;
 import minnim.exception.MinnimTargetTaskNumNotFoundException;
 import minnim.parser.Parser;
 import minnim.storage.Storage;
+import minnim.storage.UndoStorage;
 import minnim.task.TaskList;
 import minnim.ui.Ui;
 
@@ -19,6 +20,7 @@ public class Minnim {
     private TaskList tasks;
     private Ui ui;
     private Parser parser;
+    private UndoStorage undoStorage;
 
     /**
      * Initializes the Minnim application with the specified file path for storing tasks.
@@ -30,8 +32,9 @@ public class Minnim {
     public Minnim(String filePath) {
         this.ui = new Ui();
         this.storage = new Storage(filePath, ui);
-        this.tasks = new TaskList(storage.loadTasks(), ui);
-        this.parser = new Parser(tasks, ui, storage);
+        this.undoStorage = new UndoStorage();
+        this.tasks = new TaskList(storage.loadTasks(), ui, undoStorage);
+        this.parser = new Parser(tasks, ui, storage, undoStorage);
 
         ui.showMessage("Below is the current task list:");
         tasks.listTasks();

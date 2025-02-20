@@ -18,6 +18,7 @@ import minnim.exception.MinnimMissingTaskDetailException;
 import minnim.exception.MinnimNoTaskFoundException;
 import minnim.exception.MinnimTargetTaskNumNotFoundException;
 
+import minnim.storage.UndoStorage;
 import minnim.ui.Ui;
 
 public class TaskListTest {
@@ -31,7 +32,7 @@ public class TaskListTest {
         // Create mock Ui and initialize the TaskList
         ui = mock(Ui.class);
         tasks = new ArrayList<>();
-        taskList = new TaskList(tasks, ui);
+        taskList = new TaskList(tasks, ui, new UndoStorage());
     }
 
     @Test
