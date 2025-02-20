@@ -89,7 +89,6 @@ public class Storage {
         return tasks;
     }
 
-
     /**
      * Saves the given list of tasks to the specified file.
      *

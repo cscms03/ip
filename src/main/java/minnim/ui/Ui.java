@@ -37,5 +37,9 @@ public class Ui {
     public String showUnknownCommandMessage() {
         return "Unknown command. Please try again.";
     }
+
+    public String showUndoAction(String undoneAction) {
+        return "I have undone your most recent task: " + undoneAction;
+    }
 }
 

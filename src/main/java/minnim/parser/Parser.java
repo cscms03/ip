@@ -4,6 +4,7 @@ import minnim.exception.MinnimMissingDateException;
 import minnim.exception.MinnimMissingTaskDetailException;
 import minnim.exception.MinnimNoTaskFoundException;
 import minnim.exception.MinnimTargetTaskNumNotFoundException;
+import minnim.storage.UndoStorage;
 import minnim.task.TaskList;
 import minnim.ui.Ui;
 import minnim.storage.Storage;
@@ -15,18 +16,22 @@ public class Parser {
     private TaskList taskList;
     private Ui ui;
     private Storage storage;
+    private UndoStorage undoStorage;
+
 
     /**
      * Constructs a Parser object.
      *
-     * @param taskList The task list to manage tasks.
-     * @param ui       The user interface for displaying messages.
-     * @param storage  The storage handler for saving and loading tasks.
+     * @param taskList    The task list to manage tasks.
+     * @param ui          The user interface for displaying messages.
+     * @param storage     The storage handler for saving and loading tasks.
+     * @param undoStorage
      */
-    public Parser(TaskList taskList, Ui ui, Storage storage) {
+    public Parser(TaskList taskList, Ui ui, Storage storage, UndoStorage undoStorage) {
         this.taskList = taskList;
         this.ui = ui;
         this.storage = storage;
+        this.undoStorage = undoStorage;
     }
 
     /**
@@ -51,21 +56,27 @@ public class Parser {
 
         switch (command.toLowerCase()) {
         case "todo":
+            this.undoStorage.addRecentTask(message);
             response = taskList.addTodo(message);
             break;
         case "deadline":
+            this.undoStorage.addRecentTask(message);
             response = taskList.addDeadline(message);
             break;
         case "event":
+            this.undoStorage.addRecentTask(message);
             response = taskList.addEvent(message);
             break;
         case "mark":
+            this.undoStorage.addRecentTask(message);
             response = taskList.markTask(message);
             break;
         case "unmark":
+            this.undoStorage.addRecentTask(message);
             response = taskList.unmarkTask(message);
             break;
         case "delete":
+            this.undoStorage.addRecentTask(message);
             response = taskList.deleteTask(message);
             break;
         case "list":
@@ -73,6 +84,9 @@ public class Parser {
             break;
         case "find":
             response = taskList.find(message);
+            break;
+        case "undo":
+            response = taskList.handleUndo();
             break;
         case "bye":
             storage.saveTasks(taskList.getTasks());

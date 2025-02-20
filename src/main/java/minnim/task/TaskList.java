@@ -7,6 +7,7 @@ import minnim.exception.MinnimMissingTaskDetailException;
 import minnim.exception.MinnimNoTaskFoundException;
 import minnim.exception.MinnimTargetTaskNumNotFoundException;
 import minnim.exception.MinnimException;
+import minnim.storage.UndoStorage;
 import minnim.ui.Ui;
 
 /**
@@ -15,6 +16,7 @@ import minnim.ui.Ui;
 public class TaskList {
     private ArrayList<Task> tasks;
     private Ui ui;
+    private UndoStorage undoStorage;
 
     /**
      * Constructs a TaskList with the given list of tasks and user interface.
@@ -22,9 +24,10 @@ public class TaskList {
      * @param tasks The list of tasks.
      * @param ui    The user interface for displaying messages.
      */
-    public TaskList(ArrayList<Task> tasks, Ui ui) {
+    public TaskList(ArrayList<Task> tasks, Ui ui, UndoStorage undoStorage) {
         this.tasks = tasks;
         this.ui = ui;
+        this.undoStorage = undoStorage;
     }
 
     /**
@@ -212,6 +215,7 @@ public class TaskList {
         int taskNum = Integer.parseInt(message.substring(7).trim());
         try {
             Task task = tasks.remove(taskNum - 1);
+            undoStorage.storeDeletedTask(task);
             return ui.showTaskDeleted(task, tasks.size());
         } catch (IndexOutOfBoundsException e) {
             throw new MinnimNoTaskFoundException(taskNum);
@@ -233,5 +237,73 @@ public class TaskList {
             }
             return taskListString.toString();
         }
+    }
+
+    public String addDeletedTask(int deletedIndex) {
+        Task deletedTask = undoStorage.getDeletedTask();
+        if (deletedIndex < 0 || deletedIndex > tasks.size()) { // Ensure deletedIndex is valid
+            deletedIndex = tasks.size(); // Default to appending if out of bounds
+        }
+        tasks.add(deletedIndex, deletedTask); // Insert task at specified index
+        return ui.showTaskAdded(deletedTask, tasks.size());
+    }
+
+    public String handleUndo() throws
+            MinnimTargetTaskNumNotFoundException, MinnimNoTaskFoundException {
+        String message = undoStorage.getRecentTask();
+        System.out.println("handling: " + message);
+        String[] words = message.split(" ");
+        String command = words[0];
+
+        if (command.equalsIgnoreCase("delete")) {
+            return handleDelete(words);
+        } else {
+            return executeUndoAction(command, words);
+        }
+    }
+
+    private String executeUndoAction(String command, String[] words) throws
+            MinnimTargetTaskNumNotFoundException, MinnimNoTaskFoundException {
+        String undoAction = "";
+        switch (command.toLowerCase()) {
+        case "todo":
+        case "deadline":
+        case "event":
+            int lastIndex = this.getTasks().size();
+            undoAction = getDeleteCommand(lastIndex);
+            return deleteTask(undoAction);
+        case "mark":
+            assert words.length >= 2;
+            int markedIndex = Integer.parseInt(words[1]);
+            undoAction = getUnmarkCommand(markedIndex);
+            return unmarkTask(undoAction);
+        case "unmark":
+            assert words.length >= 2;
+            int unmarkedIndex = Integer.parseInt(words[1]);
+            undoAction = getMarkCommand(unmarkedIndex);
+            return markTask(undoAction);
+        default:
+            assert false;
+            return "";
+        }
+    }
+
+    private String handleDelete(String[] words) {
+        assert words.length >= 2;
+        int deletedIndex = Integer.parseInt(words[1]) - 1;
+        return addDeletedTask(deletedIndex);
+    }
+
+
+    public String getDeleteCommand(int index) {
+        return String.format("delete %d", index);
+    }
+
+    public String getUnmarkCommand(int index) {
+        return String.format("unmark %d", index);
+    }
+
+    public String getMarkCommand(int index) {
+        return String.format("mark %d", index);
     }
 }

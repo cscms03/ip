@@ -19,6 +19,9 @@ dependencies {
     implementation group: 'org.openjfx', name: 'javafx-controls', version: javaFxVersion, classifier: platform
     implementation group: 'org.openjfx', name: 'javafx-fxml', version: javaFxVersion, classifier: platform
     implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: platform
+
+    testImplementation 'org.mockito:mockito-core:5.3.1'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.3.1'
 }
 
 test {
