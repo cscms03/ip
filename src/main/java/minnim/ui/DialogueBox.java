@@ -15,6 +15,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 
+/**
+ * Represents a dialogue box consisting of text and an image.
+ * Used in the UI to display user and Minnim's responses.
+ */
 public class DialogueBox extends HBox {
 
     @FXML
@@ -22,6 +26,12 @@ public class DialogueBox extends HBox {
     @FXML
     private ImageView displayPicture;
 
+    /**
+     * Constructs a DialogueBox with the given text and image.
+     *
+     * @param text  The text content of the dialogue.
+     * @param image The image associated with the dialogue (user or Minnim).
+     */
     public DialogueBox(String text, Image image) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(
@@ -45,10 +55,25 @@ public class DialogueBox extends HBox {
         setAlignment(Pos.TOP_LEFT);
     }
 
+    /**
+     * Creates a dialogue box for user messages.
+     *
+     * @param text  The text content of the user's message.
+     * @param image The image representing the user.
+     * @return A DialogueBox instance displaying the user's message.
+     */
     public static DialogueBox getUserDialogue(String text, Image image) {
         return new DialogueBox(text, image);
     }
 
+    /**
+     * Creates a dialogue box for Minnim's responses and flips it
+     * so that the image appears on the left.
+     *
+     * @param text The text content of Minnim's response.
+     * @param img  The image representing Minnim.
+     * @return A DialogueBox instance displaying Minnim's response.
+     */
     public static DialogueBox getMinnimDialogue(String text, Image img) {
         DialogueBox dialogueBox = new DialogueBox(text, img);
         dialogueBox.flip();

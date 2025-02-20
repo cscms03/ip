@@ -32,56 +32,63 @@ public class Storage {
         this.ui = ui;
     }
 
-    /**
-     * Loads tasks from the specified file.
-     *
-     * @return A list of tasks loaded from the file. Returns an empty list if the file does not exist or cannot be read.
-     */
-    public ArrayList<Task> loadTasks() {
-        ArrayList<Task> tasks = new ArrayList<>();
-        File file = new File(filePath);
-
-        if (!file.exists()) {
-            ui.showMessage("Task file not found. Starting with an empty list.");
-            return tasks;
-        }
-
-        try (Scanner scanner = new Scanner(file)) {
+    private ArrayList<String> readFile() {
+        ArrayList<String> lines = new ArrayList<>();
+        try (Scanner scanner = new Scanner(new File(filePath))) {
             while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] parts = line.split(" \\| ");
-
-                assert parts.length > 3 : "Corrupt task format in file.";
-
-                String type = parts[0];
-                boolean isDone = parts[1].equals("1");
-                String description = parts[2];
-
-                Task task = null;
-                if (type.equals("Todo")) {
-                    task = new Todo(description);
-                } else if (type.equals("Deadline")) {
-                    task = new Deadline(description, parts[3]);
-                } else if (type.equals("Event")) {
-                    task = new Events(description, parts[3], parts[4]);
-                }
-
-                if (task != null) {
-                    if (isDone) {
-                        task.setMarked();
-                    }
-                    tasks.add(task);
-                }
-
+                lines.add(scanner.nextLine());
             }
         } catch (FileNotFoundException e) {
             ui.showError("Task file not found.");
         } catch (Exception e) {
             ui.showError("Error loading tasks: " + e.getMessage());
         }
+        return lines;
+    }
 
+    private Task createTaskFromLine(String line) {
+        String[] parts = line.split(" \\| ");
+        String type = parts[0];
+        boolean isDone = parts[1].equals("1");
+        String description = parts[2];
+
+        Task task = switch (type) {
+            case "Todo" -> new Todo(description);
+            case "Deadline" -> new Deadline(description, parts[3]);
+            case "Event" -> new Events(description, parts[3], parts[4]);
+            default -> null;
+        };
+
+        if (task != null && isDone) {
+            task.setMarked();
+        }
+        return task;
+    }
+
+   /**
+     * Loads tasks from a file and returns them as an ArrayList.
+     * If the file is not found or empty, an empty task list is returned.
+     *
+     * @return An ArrayList of Task objects loaded from the file.
+     */
+    public ArrayList<Task> loadTasks() {
+        ArrayList<Task> tasks = new ArrayList<>();
+        ArrayList<String> lines = readFile();
+
+        if (lines.isEmpty()) {
+            ui.showMessage("Task file not found. Starting with an empty list.");
+            return tasks;
+        }
+
+        for (String line : lines) {
+            Task task = createTaskFromLine(line);
+            if (task != null) {
+                tasks.add(task);
+            }
+        }
         return tasks;
     }
+
 
     /**
      * Saves the given list of tasks to the specified file.
