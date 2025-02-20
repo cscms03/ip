@@ -28,15 +28,15 @@ public class Deadline extends Task {
      * @param deadlineStr The deadline date as a string in yyyy-MM-dd format.
      * @return A LocalDate object representing the deadline, or null if the format is invalid.
      */
-    private LocalDate parseDeadline(String deadlineStr) {
+    private LocalDate parseDeadline(String deadlineStr) throws DateTimeParseException {
         try {
             // Assuming the format provided is yyyy-MM-dd (e.g., 2019-12-02)
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             return LocalDate.parse(deadlineStr, formatter);
         } catch (DateTimeParseException e) {
             // Handle invalid date format here
-            System.out.println("Invalid date format. Please use yyyy-MM-dd.");
-            return null;
+            throw new DateTimeParseException("Invalid date format: it has to be in yyyy-MM-dd",
+                    deadlineStr, e.getErrorIndex());
         }
     }
 

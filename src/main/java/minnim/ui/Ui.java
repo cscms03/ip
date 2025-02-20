@@ -38,6 +38,10 @@ public class Ui {
         return "Unknown command. Please try again.";
     }
 
+    public String showNoUndoTaskMessage() {
+        return "You cannot undo any further actions.";
+    }
+
     public String showUndoAction(String undoneAction) {
         return "I have undone your most recent task: " + undoneAction;
     }

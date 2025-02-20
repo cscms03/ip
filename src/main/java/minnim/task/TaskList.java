@@ -1,5 +1,6 @@
 package minnim.task;
 
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 import minnim.exception.MinnimMissingDateException;
@@ -52,8 +53,8 @@ public class TaskList {
             String keyword = extractKeyword(message);
             ArrayList<Task> matchingTasks = findMatchingTasks(keyword);
             return generateResponse(matchingTasks);
-        } catch (MinnimException e) {
-            return ui.showError(e.getMessage());
+        } catch (MinnimMissingTaskDetailException e) {
+            return ui.showError(e.toString());
         }
     }
 
@@ -102,7 +103,7 @@ public class TaskList {
             tasks.add(todo);
             return ui.showTaskAdded(todo, tasks.size());
         } catch (StringIndexOutOfBoundsException e) {
-            throw new MinnimMissingTaskDetailException();
+            return ui.showError(new MinnimMissingTaskDetailException().toString());
         }
     }
 
@@ -117,7 +118,7 @@ public class TaskList {
     public String addDeadline(String message) throws MinnimMissingDateException, MinnimMissingTaskDetailException {
         try {
             if (message.length() == 8) {
-                throw new MinnimMissingTaskDetailException();
+                return ui.showError(new MinnimMissingTaskDetailException().toString());
             }
             int index = message.indexOf("/");
             String date = message.substring(index + 1).replaceFirst("by", "").trim();
@@ -125,7 +126,9 @@ public class TaskList {
             tasks.add(deadline);
             return ui.showTaskAdded(deadline, tasks.size());
         } catch (StringIndexOutOfBoundsException e) {
-            throw new MinnimMissingDateException();
+            return ui.showError(new MinnimMissingDateException().toString());
+        } catch (DateTimeParseException e) {
+            return ui.showError(e.getMessage());
         }
     }
 
@@ -140,7 +143,7 @@ public class TaskList {
     public String addEvent(String message) throws MinnimMissingDateException, MinnimMissingTaskDetailException {
         try {
             if (message.length() == 5) {
-                throw new MinnimMissingTaskDetailException();
+                return ui.showError(new MinnimMissingTaskDetailException().toString());
             }
             assert message.contains("/") : "date format: /from ... /to ...";
 
@@ -152,7 +155,9 @@ public class TaskList {
             tasks.add(event);
             return ui.showTaskAdded(event, tasks.size());
         } catch (StringIndexOutOfBoundsException e) {
-            throw new MinnimMissingDateException();
+            return ui.showError(new MinnimMissingDateException().toString());
+        } catch (DateTimeParseException | IllegalArgumentException e) {
+            return ui.showError(e.getMessage());
         }
     }
 
@@ -166,7 +171,7 @@ public class TaskList {
      */
     public String markTask(String message) throws MinnimNoTaskFoundException, MinnimTargetTaskNumNotFoundException {
         if (message.trim().length() == 4) {
-            throw new MinnimTargetTaskNumNotFoundException();
+            return ui.showError(new MinnimTargetTaskNumNotFoundException().toString());
         }
         int taskNum = Integer.parseInt(message.substring(5).trim());
         try {
@@ -174,7 +179,7 @@ public class TaskList {
             task.setMarked();
             return ui.showTaskMarked(task);
         } catch (IndexOutOfBoundsException e) {
-            throw new MinnimNoTaskFoundException(taskNum);
+            return ui.showError(new MinnimNoTaskFoundException(taskNum).toString());
         }
     }
 
@@ -188,7 +193,7 @@ public class TaskList {
      */
     public String unmarkTask(String message) throws MinnimNoTaskFoundException, MinnimTargetTaskNumNotFoundException {
         if (message.trim().length() == 6) {
-            throw new MinnimTargetTaskNumNotFoundException();
+            return ui.showError(new MinnimTargetTaskNumNotFoundException().toString());
         }
         int taskNum = Integer.parseInt(message.substring(7).trim());
         try {
@@ -196,7 +201,7 @@ public class TaskList {
             task.setUnmarked();
             return ui.showTaskUnmarked(task);
         } catch (IndexOutOfBoundsException e) {
-            throw new MinnimNoTaskFoundException(taskNum);
+            return ui.showError(new MinnimNoTaskFoundException(taskNum).toString());
         }
     }
 
@@ -210,7 +215,7 @@ public class TaskList {
      */
     public String deleteTask(String message) throws MinnimTargetTaskNumNotFoundException, MinnimNoTaskFoundException {
         if (message.trim().length() == 6) {
-            throw new MinnimTargetTaskNumNotFoundException();
+            return ui.showError(new MinnimTargetTaskNumNotFoundException().toString());
         }
         int taskNum = Integer.parseInt(message.substring(7).trim());
         try {
@@ -218,7 +223,7 @@ public class TaskList {
             undoStorage.storeDeletedTask(task);
             return ui.showTaskDeleted(task, tasks.size());
         } catch (IndexOutOfBoundsException e) {
-            throw new MinnimNoTaskFoundException(taskNum);
+            return ui.showError(new MinnimNoTaskFoundException(taskNum).toString());
         }
     }
 
@@ -250,15 +255,19 @@ public class TaskList {
 
     public String handleUndo() throws
             MinnimTargetTaskNumNotFoundException, MinnimNoTaskFoundException {
-        String message = undoStorage.getRecentTask();
-        System.out.println("handling: " + message);
-        String[] words = message.split(" ");
-        String command = words[0];
+        try {
+            String message = undoStorage.getRecentTask();
+            System.out.println("handling: " + message);
+            String[] words = message.split(" ");
+            String command = words[0];
 
-        if (command.equalsIgnoreCase("delete")) {
-            return handleDelete(words);
-        } else {
-            return executeUndoAction(command, words);
+            if (command.equalsIgnoreCase("delete")) {
+                return handleDelete(words);
+            } else {
+                return executeUndoAction(command, words);
+            }
+        } catch (NullPointerException e) {
+            return ui.showNoUndoTaskMessage();
         }
     }
 
@@ -293,7 +302,6 @@ public class TaskList {
         int deletedIndex = Integer.parseInt(words[1]) - 1;
         return addDeletedTask(deletedIndex);
     }
-
 
     public String getDeleteCommand(int index) {
         return String.format("delete %d", index);
