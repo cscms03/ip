@@ -8,8 +8,6 @@ import minnim.task.TaskList;
 import minnim.ui.Ui;
 import minnim.storage.Storage;
 
-//TODO: Update JavaDoc as return value changed from void to String
-
 /**
  * Parses and processes user commands.
  */
