@@ -43,8 +43,8 @@ public class Events extends Task {
             return LocalDate.parse(dateStr, formatter);
         } catch (DateTimeParseException e) {
             // Handle invalid date format here
-            System.out.println("Invalid date format. Please use yyyy-MM-dd.");
-            return null;
+            throw new DateTimeParseException("Invalid date format: it has to be in yyyy-MM-dd",
+                    dateStr, e.getErrorIndex());
         }
     }
 
