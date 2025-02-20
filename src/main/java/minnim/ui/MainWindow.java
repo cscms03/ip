@@ -31,7 +31,7 @@ public class MainWindow extends AnchorPane {
     private Button sendButton;
 
     private Minnim minnim;
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/minnim.png"));
+    private Image userImage = new Image(this.getClass().getResourceAsStream("/user.png"));
     private Image minnimImage = new Image(this.getClass().getResourceAsStream("/minnim.png"));
 
     /**
