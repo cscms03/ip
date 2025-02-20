@@ -30,14 +30,16 @@ public class Parser {
         this.ui = ui;
         this.storage = storage;
     }
+
     /**
-     * Parses and executes the given command.
+     * Parses the user input command and executes the corresponding action.
      *
-     * @param message The user input command.
-     * @throws MinnimMissingTaskDetailException     If a task detail is missing.
-     * @throws MinnimMissingDateException          If a date is required but missing.
-     * @throws MinnimTargetTaskNumNotFoundException If a task number is missing.
-     * @throws MinnimNoTaskFoundException          If the specified task number does not exist.
+     * @param message The full command input by the user.
+     * @return A response message as a String indicating the result of the command execution.
+     * @throws MinnimMissingTaskDetailException If a task is missing necessary details.
+     * @throws MinnimMissingDateException If a deadline or event is missing a date.
+     * @throws MinnimTargetTaskNumNotFoundException If the specified task number is invalid.
+     * @throws MinnimNoTaskFoundException If the task list is empty when an operation requires tasks.
      */
     public String parseCommand(String message) throws
             MinnimMissingTaskDetailException, MinnimMissingDateException,
