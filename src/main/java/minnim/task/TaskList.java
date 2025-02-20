@@ -139,6 +139,8 @@ public class TaskList {
             if (message.length() == 5) {
                 throw new MinnimMissingTaskDetailException();
             }
+            assert message.contains("/") : "date format: /from ... /to ...";
+
             int firstIndex = message.indexOf("/");
             int secondIndex = message.indexOf("/", firstIndex + 1);
             String fromDate = message.substring(firstIndex + 1, secondIndex - 1).replaceFirst("from", "").trim();
