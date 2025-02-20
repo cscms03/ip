@@ -16,6 +16,10 @@ import minnim.exception.MinnimMissingTaskDetailException;
 import minnim.exception.MinnimNoTaskFoundException;
 import minnim.exception.MinnimTargetTaskNumNotFoundException;
 
+/**
+ * The MainWindow class represents the primary UI layout of Minnim's JavaFX application.
+ * It handles user interactions, displays messages, and integrates with the Minnim chatbot.
+ */
 public class MainWindow extends AnchorPane {
     @FXML
     private ScrollPane scrollPane;
@@ -30,6 +34,11 @@ public class MainWindow extends AnchorPane {
     private Image userImage = new Image(this.getClass().getResourceAsStream("/minnim.png"));
     private Image minnimImage = new Image(this.getClass().getResourceAsStream("/minnim.png"));
 
+    /**
+     * Initializes the MainWindow by setting up UI elements and displaying a greeting message.
+     * Binds the scroll pane's vertical value to the dialogue container's height,
+     * ensuring that new messages remain in view.
+     */
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogueContainer.heightProperty());
@@ -39,6 +48,11 @@ public class MainWindow extends AnchorPane {
         dialogueContainer.getChildren().add(DialogueBox.getMinnimDialogue(greeting, minnimImage));
     }
 
+    /**
+     * Sets the Minnim chatbot instance for this window.
+     *
+     * @param minnim The Minnim chatbot instance.
+     */
     public void setMinnim(Minnim minnim) {
         this.minnim = minnim;
     }

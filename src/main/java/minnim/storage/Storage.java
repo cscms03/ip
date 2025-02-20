@@ -65,6 +65,12 @@ public class Storage {
         return task;
     }
 
+    /**
+     * Loads tasks from a file and returns them as an ArrayList.
+     * If the file is not found or empty, an empty task list is returned.
+     *
+     * @return An ArrayList of Task objects loaded from the file.
+     */
     public ArrayList<Task> loadTasks() {
         ArrayList<Task> tasks = new ArrayList<>();
         ArrayList<String> lines = readFile();
