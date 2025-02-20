@@ -1,4 +1,0 @@
-Event | 1 | test task | 2025-12-12 | 2025-12-13
-Todo | 0 | this
-Todo | 1 | that
-Event | 0 | internship | 2025-12-12 | 2025-12-13
