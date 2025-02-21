@@ -1,33 +1,43 @@
 package minnim;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.scene.image.Image;
 
 import minnim.ui.MainWindow;
 
 
 public class Main extends Application {
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/minnim.png"));
-    private Image minnimImage = new Image(this.getClass().getResourceAsStream("/minnim.png"));
 
+    // Ensure the directory exists before using it
+    private String getFilePath() {
+        String home = System.getProperty("user.home"); // Works on Windows, macOS, Linux
+        Path dataPath = Paths.get(home, "Minnim"); // Saves in ~/Minnim (Linux/macOS) or C:\Users\YourUser\Minnim (Windows)
+        Path filePath = dataPath.resolve("minnim.txt");
 
-    private Minnim minnim = new Minnim("data/minnim.Minnim.txt");
+        if (!Files.exists(dataPath)) {
+            try {
+                Files.createDirectories(dataPath);
+            } catch (IOException e) {
+                System.err.println("Failed to create directory: " + e.getMessage());
+            }
+        }
+        return filePath.toString();
+    }
 
     @Override
     public void start(Stage stage) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
+            Minnim minnim = new Minnim(getFilePath());
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
