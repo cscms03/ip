@@ -257,7 +257,6 @@ public class TaskList {
             MinnimTargetTaskNumNotFoundException, MinnimNoTaskFoundException {
         try {
             String message = undoStorage.getRecentTask();
-            System.out.println("handling: " + message);
             String[] words = message.split(" ");
             String command = words[0];
 

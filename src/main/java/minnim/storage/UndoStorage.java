@@ -14,7 +14,6 @@ public class UndoStorage {
             recentTasks.remove(0); // Maintain size limit
         }
         recentTasks.push(message);
-        System.out.println(message + recentTasks.toString());
     }
 
     public void storeDeletedTask(Task task) {
@@ -22,7 +21,6 @@ public class UndoStorage {
             deletedTasks.remove(0); // Maintain size limit
         }
         deletedTasks.push(task);
-        System.out.println(task.getDescription());
     }
 
     public Task getDeletedTask() {
